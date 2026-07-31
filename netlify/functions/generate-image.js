@@ -10,9 +10,7 @@ exports.handler = async function (event) {
     }
 
     var body = JSON.parse(event.body || "{}");
-
     var prompt = body.prompt;
-    var accessToken = body.access_token;
 
     if (!prompt) {
       return {
@@ -23,12 +21,15 @@ exports.handler = async function (event) {
       };
     }
 
-    if (!accessToken) {
+    // کلید فقط از Netlify Environment Variable خوانده می‌شود
+    var apiKey = process.env.POLLINATIONS_API_KEY;
+
+    if (!apiKey) {
       return {
-        statusCode: 401,
+        statusCode: 500,
         body: JSON.stringify({
           error:
-            "Pollinations account is not connected"
+            "POLLINATIONS_API_KEY is not configured"
         })
       };
     }
@@ -41,26 +42,18 @@ exports.handler = async function (event) {
       encodedPrompt +
       "?model=flux&width=1024&height=1024";
 
-    var response = await fetch(
-      imageUrl,
-      {
-        method: "GET",
-
-        headers: {
-          "Authorization":
-            "Bearer " + accessToken
-        }
+    var response = await fetch(imageUrl, {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + apiKey
       }
-    );
+    });
 
     if (!response.ok) {
-
-      var errorText =
-        await response.text();
+      var errorText = await response.text();
 
       return {
         statusCode: response.status,
-
         body: JSON.stringify({
           error:
             errorText ||
