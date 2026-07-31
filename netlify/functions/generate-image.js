@@ -12,7 +12,8 @@ exports.handler = async function (event) {
       };
     }
 
-    const { prompt } = JSON.parse(event.body || "{}");
+    const body = JSON.parse(event.body || "{}");
+    const prompt = body.prompt;
 
     if (!prompt) {
       return {
@@ -21,12 +22,12 @@ exports.handler = async function (event) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          error: "Prompt is required"
+          error: "Please enter an image description."
         })
       };
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.POLLINATIONS_API_KEY;
 
     if (!apiKey) {
       return {
@@ -35,53 +36,25 @@ exports.handler = async function (event) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          error: "GEMINI_API_KEY is not configured"
+          error: "POLLINATIONS_API_KEY is not configured."
         })
       };
     }
 
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1/models/gemini-3.1-flash-image:generateContent",
-      {
-        method: "POST",
+    const encodedPrompt = encodeURIComponent(prompt);
 
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": apiKey
-        },
+    const imageUrl =
+      https://gen.pollinations.ai/image/${encodedPrompt}?model=flux&width=1024&height=1024;
 
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: prompt
-                }
-              ]
-            }
-          ],
-
-          generationConfig: {
-            responseModalities: ["IMAGE"]
-          }
-        })
+    const response = await fetch(imageUrl, {
+      method: "GET",
+      headers: {
+        "Authorization": Bearer ${apiKey}
       }
-    );
-
-    const data = await response.json();
+    });
 
     if (!response.ok) {
-      let errorMessage = "Image generation failed.";
-
-      if (data && data.error) {
-        if (typeof data.error === "string") {
-          errorMessage = data.error;
-        } else if (data.error.message) {
-          errorMessage = data.error.message;
-        } else {
-          errorMessage = JSON.stringify(data.error);
-        }
-      }
+      const errorText = await response.text();
 
       return {
         statusCode: response.status,
@@ -89,31 +62,33 @@ exports.handler = async function (event) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          error: errorMessage
+          error: errorText || "Image generation failed."
         })
       };
     }
 
+    const imageBuffer = await response.arrayBuffer();
+
+    const base64Image = Buffer.from(imageBuffer).toString("base64");
+
     return {
       statusCode: 200,
-
       headers: {
         "Content-Type": "application/json"
       },
-
-      body: JSON.stringify(data)
+      body: JSON.stringify({
+        image: data:image/png;base64,${base64Image}
+      })
     };
 
   } catch (error) {
     return {
       statusCode: 500,
-
       headers: {
         "Content-Type": "application/json"
       },
-
       body: JSON.stringify({
-        error: error.message || "Unknown server error"
+        error: error.message || "Unknown server error."
       })
     };
   }
