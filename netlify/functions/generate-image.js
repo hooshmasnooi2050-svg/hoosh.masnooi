@@ -3,19 +3,26 @@ exports.handler = async function (event) {
     if (event.httpMethod !== "POST") {
       return {
         statusCode: 405,
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           error: "Method not allowed"
         })
       };
     }
 
-    const { prompt } = JSON.parse(event.body || "{}");
+    const body = JSON.parse(event.body || "{}");
+    const prompt = body.prompt;
 
     if (!prompt) {
       return {
         statusCode: 400,
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-          error: "Prompt is required"
+          error: "Please enter an image description."
         })
       };
     }
@@ -25,14 +32,17 @@ exports.handler = async function (event) {
     if (!apiKey) {
       return {
         statusCode: 500,
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-          error: "GEMINI_API_KEY is not configured"
+          error: "GEMINI_API_KEY is not configured."
         })
       };
     }
 
     const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-image-generation:generateContent",
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent",
       {
         method: "POST",
 
@@ -62,30 +72,50 @@ exports.handler = async function (event) {
     const data = await response.json();
 
     if (!response.ok) {
+      let errorMessage = "Image generation failed.";
+
+      if (data && data.error) {
+        if (typeof data.error === "string") {
+          errorMessage = data.error;
+        } else if (data.error.message) {
+          errorMessage = data.error.message;
+        } else {
+          errorMessage = JSON.stringify(data.error);
+        }
+      }
+
       return {
         statusCode: response.status,
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-          error: data.error || "Image generation failed"
+          error: errorMessage
         })
       };
     }
 
     return {
       statusCode: 200,
+
       headers: {
         "Content-Type": "application/json"
       },
+
       body: JSON.stringify(data)
     };
 
   } catch (error) {
-
     return {
       statusCode: 500,
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
       body: JSON.stringify({
-        error: error.message
+        error: error.message || "Unknown server error."
       })
     };
-
   }
 };
