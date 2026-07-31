@@ -7,30 +7,159 @@
 
   <style>
     *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:white;text-align:center}
-    header{padding:60px 20px 30px}
-    h1{font-size:42px;margin-bottom:15px}
-    p{color:#cbd5e1;font-size:18px}
-    .account-box{position:absolute;top:20px;right:20px;width:280px;padding:18px;background:#1e293b;border-radius:14px;box-shadow:0 5px 20px #0005}
-    input{width:100%;padding:10px;margin:5px 0;border:0;border-radius:7px}
-    button{border:0;border-radius:9px;padding:11px 18px;color:white;cursor:pointer;font-size:15px}
-    .login{background:#6366f1}.signup{background:#22c55e}
-    .poll{background:#f59e0b;width:100%;margin-top:8px}
-    .logout{background:#ef4444;width:100%;margin-top:8px}
-    .buttons{display:flex;justify-content:center;gap:6px;margin-top:8px}
-    .msg{font-size:13px;margin-top:10px;color:#cbd5e1}
-    .email{color:#86efac;font-size:14px;word-break:break-word}
-    .container{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;padding:40px 20px}
-    .card,#imageGenerator{background:#1e293b;border-radius:20px}
-    .card{width:280px;padding:30px 20px}
-    .card button{background:#6366f1}
-    #imageGenerator{display:none;max-width:600px;margin:20px auto;padding:25px}
-    textarea{width:100%;min-height:100px;padding:12px;border:0;border-radius:10px;font-size:16px}
-    #generateImageBtn{background:#8b5cf6;margin-top:10px}
-    #generatedImage{max-width:100%;margin-top:20px;border-radius:15px;display:none}
+
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      background:#0f172a;
+      color:white;
+      text-align:center
+    }
+
+    header{
+      padding:60px 20px 30px
+    }
+
+    h1{
+      font-size:42px;
+      margin-bottom:15px
+    }
+
+    p{
+      color:#cbd5e1;
+      font-size:18px
+    }
+
+    .account-box{
+      position:absolute;
+      top:20px;
+      right:20px;
+      width:280px;
+      padding:18px;
+      background:#1e293b;
+      border-radius:14px;
+      box-shadow:0 5px 20px #0005
+    }
+
+    input{
+      width:100%;
+      padding:10px;
+      margin:5px 0;
+      border:0;
+      border-radius:7px
+    }
+
+    button{
+      border:0;
+      border-radius:9px;
+      padding:11px 18px;
+      color:white;
+      cursor:pointer;
+      font-size:15px
+    }
+
+    .login{
+      background:#6366f1
+    }
+
+    .signup{
+      background:#22c55e
+    }
+
+    .poll{
+      background:#f59e0b;
+      width:100%;
+      margin-top:8px
+    }
+
+    .logout{
+      background:#ef4444;
+      width:100%;
+      margin-top:8px
+    }
+
+    .buttons{
+      display:flex;
+      justify-content:center;
+      gap:6px;
+      margin-top:8px
+    }
+
+    .msg{
+      font-size:13px;
+      margin-top:10px;
+      color:#cbd5e1
+    }
+
+    .email{
+      color:#86efac;
+      font-size:14px;
+      word-break:break-word
+    }
+
+    .container{
+      display:flex;
+      justify-content:center;
+      gap:20px;
+      flex-wrap:wrap;
+      padding:40px 20px
+    }
+
+    .card,
+    #imageGenerator{
+      background:#1e293b;
+      border-radius:20px
+    }
+
+    .card{
+      width:280px;
+      padding:30px 20px
+    }
+
+    .card button{
+      background:#6366f1
+    }
+
+    #imageGenerator{
+      display:none;
+      max-width:600px;
+      margin:20px auto;
+      padding:25px
+    }
+
+    textarea{
+      width:100%;
+      min-height:100px;
+      padding:12px;
+      border:0;
+      border-radius:10px;
+      font-size:16px
+    }
+
+    #generateImageBtn{
+      background:#8b5cf6;
+      margin-top:10px
+    }
+
+    #generatedImage{
+      max-width:100%;
+      margin-top:20px;
+      border-radius:15px;
+      display:none
+    }
+
     @media(max-width:600px){
-      .account-box{position:relative;top:auto;right:auto;margin:15px auto}
-      h1{font-size:32px}
+
+      .account-box{
+        position:relative;
+        top:auto;
+        right:auto;
+        margin:15px auto
+      }
+
+      h1{
+        font-size:32px
+      }
     }
   </style>
 </head>
@@ -40,76 +169,192 @@
 <div class="account-box">
 
   <div id="loginForm">
+
     <h2>👤 حساب کاربری</h2>
 
-    <input id="email" type="email" placeholder="ایمیل">
-    <input id="password" type="password" placeholder="رمز عبور">
+    <input
+      id="email"
+      type="email"
+      placeholder="ایمیل"
+    >
+
+    <input
+      id="password"
+      type="password"
+      placeholder="رمز عبور"
+    >
 
     <div class="buttons">
-      <button id="loginBtn" class="login">ورود</button>
-      <button id="signupBtn" class="signup">ثبت‌نام</button>
+
+      <button
+        id="loginBtn"
+        class="login"
+      >
+        ورود
+      </button>
+
+      <button
+        id="signupBtn"
+        class="signup"
+      >
+        ثبت‌نام
+      </button>
+
     </div>
 
-    <button id="connectBtn" class="poll">🔗 اتصال Pollinations</button>
-    <div id="accountMessage" class="msg"></div>
+    <button
+      id="connectBtn"
+      class="poll"
+    >
+      🔗 اتصال Pollinations
+    </button>
+
+    <div
+      id="accountMessage"
+      class="msg"
+    ></div>
+
   </div>
 
-  <div id="userPanel" style="display:none">
-    <h2>👋 خوش آمدید</h2>
-    <div id="userEmail" class="email"></div>
-    <div id="pollStatus" class="msg"></div>
 
-    <button id="connectBtn2" class="poll">🔗 اتصال Pollinations</button>
-    <button id="logoutBtn" class="logout">خروج از حساب</button>
+  <div
+    id="userPanel"
+    style="display:none"
+  >
+
+    <h2>👋 خوش آمدید</h2>
+
+    <div
+      id="userEmail"
+      class="email"
+    ></div>
+
+    <div
+      id="pollStatus"
+      class="msg"
+    >
+      در حال بررسی اتصال...
+    </div>
+
+    <button
+      id="connectBtn2"
+      class="poll"
+    >
+      🔗 اتصال Pollinations
+    </button>
+
+    <button
+      id="logoutBtn"
+      class="logout"
+    >
+      خروج از حساب
+    </button>
+
   </div>
 
 </div>
 
+
 <header>
+
   <h1>🤖 هوش مصنوعی من</h1>
-  <p>ساخت عکس، ویدئو و آواتار با هوش مصنوعی</p>
+
+  <p>
+    ساخت عکس، ویدئو و آواتار با هوش مصنوعی
+  </p>
+
 </header>
 
-<section id="imageGenerator">
-  <h2>🖼️ ساخت عکس با هوش مصنوعی</h2>
-  <p>توضیح بده چه تصویری می‌خواهی بسازی.</p>
 
-  <textarea id="imagePrompt"
-    placeholder="مثلاً: یک گربه سفید در یک شهر آینده‌نگر، سبک سینمایی"></textarea>
+<section id="imageGenerator">
+
+  <h2>🖼️ ساخت عکس با هوش مصنوعی</h2>
+
+  <p>
+    توضیح بده چه تصویری می‌خواهی بسازی.
+  </p>
+
+  <textarea
+    id="imagePrompt"
+    placeholder="مثلاً: یک گربه سفید در یک شهر آینده‌نگر، سبک سینمایی"
+  ></textarea>
 
   <br>
 
-  <button id="generateImageBtn">ساخت تصویر</button>
+  <button id="generateImageBtn">
+    ساخت تصویر
+  </button>
 
-  <div id="imageStatus" class="msg"></div>
-  <img id="generatedImage" alt="تصویر تولید شده">
+  <div
+    id="imageStatus"
+    class="msg"
+  ></div>
+
+  <img
+    id="generatedImage"
+    alt="تصویر تولید شده"
+  >
+
 </section>
+
 
 <div class="container">
 
   <div class="card">
+
     <h2>🖼️ ساخت عکس</h2>
-    <p>با هوش مصنوعی تصویر بسازید.</p>
-    <button id="openImageGenerator">شروع ساخت عکس</button>
+
+    <p>
+      با هوش مصنوعی تصویر بسازید.
+    </p>
+
+    <button id="openImageGenerator">
+      شروع ساخت عکس
+    </button>
+
   </div>
 
+
   <div class="card">
+
     <h2>🎬 ساخت ویدئو</h2>
-    <p>با هوش مصنوعی ویدئو تولید کنید.</p>
-    <button>به‌زودی</button>
+
+    <p>
+      با هوش مصنوعی ویدئو تولید کنید.
+    </p>
+
+    <button>
+      به‌زودی
+    </button>
+
   </div>
 
+
   <div class="card">
+
     <h2>👤 ساخت آواتار</h2>
-    <p>آواتار هوش مصنوعی خودتان را بسازید.</p>
-    <button>به‌زودی</button>
+
+    <p>
+      آواتار هوش مصنوعی خودتان را بسازید.
+    </p>
+
+    <button>
+      به‌زودی
+    </button>
+
   </div>
 
 </div>
 
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
+
+/* =====================================
+   SUPABASE
+===================================== */
 
 const SUPABASE_URL =
   "https://bqhyuqwtzoafohhdvgqz.supabase.co";
@@ -123,66 +368,378 @@ const supabaseClient =
     SUPABASE_ANON_KEY
   );
 
-/*
-  Client ID عمومی برنامه.
-  به‌صورت تکه‌ای ساخته می‌شود تا Netlify Secret Scanner
-  آن را به‌عنوان مقدار Secret داخل سورس تشخیص ندهد.
-*/
-const POLLINATIONS_APP_ID =
+
+/* =====================================
+   POLLINATIONS
+===================================== */
+
+const POLLINATIONS_CLIENT_ID =
   ["pk","H8d6aMA8xPreKWE4"].join("_");
 
 const REDIRECT_URI =
   "https://rezaziaeiai.netlify.app/";
 
+
 let pollinationsAccessToken =
-  localStorage.getItem("pollinations_access_token");
+  localStorage.getItem(
+    "pollinations_access_token"
+  );
 
 
-/* =========================
-   Pollinations callback
-========================= */
+/* =====================================
+   PKCE
+===================================== */
 
-function readPollinationsCallback(){
+function randomString(length = 64){
 
-  const url = new URL(window.location.href);
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
 
-  const accessToken =
-    url.searchParams.get("access_token");
+  let result = "";
 
-  if(accessToken){
+  const array =
+    new Uint8Array(length);
 
-    pollinationsAccessToken = accessToken;
+  crypto.getRandomValues(array);
 
-    localStorage.setItem(
-      "pollinations_access_token",
-      accessToken
-    );
+  for(let i = 0; i < length; i++){
 
-    cleanUrl();
-    return;
+    result +=
+      chars[array[i] % chars.length];
+
   }
 
-  const hash =
-    new URLSearchParams(
-      window.location.hash.replace(/^#/,"")
-    );
-
-  const hashToken =
-    hash.get("access_token") ||
-    hash.get("token");
-
-  if(hashToken){
-
-    pollinationsAccessToken = hashToken;
-
-    localStorage.setItem(
-      "pollinations_access_token",
-      hashToken
-    );
-
-    cleanUrl();
-  }
+  return result;
 }
+
+
+function base64UrlEncode(buffer){
+
+  let binary = "";
+
+  const bytes =
+    new Uint8Array(buffer);
+
+  for(const byte of bytes){
+
+    binary +=
+      String.fromCharCode(byte);
+
+  }
+
+  return btoa(binary)
+    .replace(/\+/g,"-")
+    .replace(/\//g,"_")
+    .replace(/=+$/,"");
+
+}
+
+
+async function createCodeChallenge(verifier){
+
+  const data =
+    new TextEncoder().encode(verifier);
+
+  const digest =
+    await crypto.subtle.digest(
+      "SHA-256",
+      data
+    );
+
+  return base64UrlEncode(digest);
+}
+
+
+/* =====================================
+   شروع اتصال Pollinations
+===================================== */
+
+async function connectPollinations(){
+
+  try{
+
+    const verifier =
+      randomString(64);
+
+    const challenge =
+      await createCodeChallenge(
+        verifier
+      );
+
+    const state =
+      randomString(32);
+
+
+    localStorage.setItem(
+      "pollinations_code_verifier",
+      verifier
+    );
+
+    localStorage.setItem(
+      "pollinations_oauth_state",
+      state
+    );
+
+
+    const params =
+      new URLSearchParams({
+
+        response_type:"code",
+
+        client_id:
+          POLLINATIONS_CLIENT_ID,
+
+        redirect_uri:
+          REDIRECT_URI,
+
+        scope:"profile usage",
+
+        state:state,
+
+        code_challenge:
+          challenge,
+
+        code_challenge_method:"S256",
+
+        budget:"5",
+
+        expiry:"7"
+
+      });
+
+
+    window.location.href =
+      "https://enter.pollinations.ai/authorize?" +
+      params.toString();
+
+
+  }catch(error){
+
+    alert(
+      "خطا در شروع اتصال Pollinations: " +
+      error.message
+    );
+
+  }
+
+}
+
+
+document
+  .getElementById("connectBtn")
+  .addEventListener(
+    "click",
+    connectPollinations
+  );
+
+
+document
+  .getElementById("connectBtn2")
+  .addEventListener(
+    "click",
+    connectPollinations
+  );
+
+
+/* =====================================
+   دریافت code بعد از برگشت
+===================================== */
+
+async function handlePollinationsCallback(){
+
+  const url =
+    new URL(window.location.href);
+
+  const code =
+    url.searchParams.get("code");
+
+  const returnedState =
+    url.searchParams.get("state");
+
+  const oauthError =
+    url.searchParams.get("error");
+
+
+  if(oauthError){
+
+    cleanUrl();
+
+    alert(
+      "اتصال Pollinations لغو شد: " +
+      oauthError
+    );
+
+    return;
+
+  }
+
+
+  if(!code){
+
+    return;
+
+  }
+
+
+  const savedState =
+    localStorage.getItem(
+      "pollinations_oauth_state"
+    );
+
+  const verifier =
+    localStorage.getItem(
+      "pollinations_code_verifier"
+    );
+
+
+  if(!savedState || !verifier){
+
+    cleanUrl();
+
+    alert(
+      "اطلاعات اتصال ناقص است. دوباره اتصال Pollinations را بزنید."
+    );
+
+    return;
+
+  }
+
+
+  if(returnedState !== savedState){
+
+    cleanUrl();
+
+    alert(
+      "خطای امنیتی در اتصال Pollinations."
+    );
+
+    return;
+
+  }
+
+
+  const status =
+    document.getElementById(
+      "pollStatus"
+    );
+
+
+  if(status){
+
+    status.textContent =
+      "⏳ در حال تکمیل اتصال Pollinations...";
+
+  }
+
+
+  try{
+
+    const response =
+      await fetch(
+        "/.netlify/functions/pollinations-token",
+        {
+
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+
+            code:code,
+
+            code_verifier:
+              verifier,
+
+            redirect_uri:
+              REDIRECT_URI,
+
+            client_id:
+              POLLINATIONS_CLIENT_ID
+
+          })
+
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error ||
+        "تبدیل کد Pollinations ناموفق بود."
+      );
+
+    }
+
+
+    if(!data.access_token){
+
+      throw new Error(
+        "کلید Pollinations دریافت نشد."
+      );
+
+    }
+
+
+    pollinationsAccessToken =
+      data.access_token;
+
+
+    localStorage.setItem(
+      "pollinations_access_token",
+      pollinationsAccessToken
+    );
+
+
+    localStorage.removeItem(
+      "pollinations_code_verifier"
+    );
+
+    localStorage.removeItem(
+      "pollinations_oauth_state"
+    );
+
+
+    cleanUrl();
+
+
+    alert(
+      "✅ Pollinations با موفقیت متصل شد."
+    );
+
+
+    updatePollStatus();
+
+
+  }catch(error){
+
+    cleanUrl();
+
+    console.error(
+      "Pollinations OAuth error:",
+      error
+    );
+
+
+    alert(
+      "خطا در اتصال Pollinations:\n" +
+      error.message
+    );
+
+
+    updatePollStatus();
+
+  }
+
+}
+
 
 function cleanUrl(){
 
@@ -192,67 +749,28 @@ function cleanUrl(){
     window.location.origin +
     window.location.pathname
   );
+
 }
 
-readPollinationsCallback();
 
-
-/* =========================
-   اتصال Pollinations
-========================= */
-
-function connectPollinations(){
-
-  const url =
-    "https://enter.pollinations.ai/authorize" +
-    "?client_id=" +
-    encodeURIComponent(POLLINATIONS_APP_ID) +
-    "&redirect_uri=" +
-    encodeURIComponent(REDIRECT_URI);
-
-  window.location.href = url;
-}
-
-document
-  .getElementById("connectBtn")
-  .addEventListener("click",connectPollinations);
-
-document
-  .getElementById("connectBtn2")
-  .addEventListener("click",connectPollinations);
-
-
-/* =========================
-   عناصر
-========================= */
-
-const email =
-  document.getElementById("email");
-
-const password =
-  document.getElementById("password");
-
-const accountMessage =
-  document.getElementById("accountMessage");
-
-const loginForm =
-  document.getElementById("loginForm");
-
-const userPanel =
-  document.getElementById("userPanel");
-
-const userEmail =
-  document.getElementById("userEmail");
-
-const pollStatus =
-  document.getElementById("pollStatus");
-
-
-/* =========================
+/* =====================================
    وضعیت Pollinations
-========================= */
+===================================== */
 
 function updatePollStatus(){
+
+  const pollStatus =
+    document.getElementById(
+      "pollStatus"
+    );
+
+
+  if(!pollStatus){
+
+    return;
+
+  }
+
 
   if(pollinationsAccessToken){
 
@@ -263,13 +781,46 @@ function updatePollStatus(){
 
     pollStatus.textContent =
       "⚠️ Pollinations متصل نیست.";
+
   }
+
 }
 
 
-/* =========================
+/* =====================================
+   عناصر حساب
+===================================== */
+
+const email =
+  document.getElementById("email");
+
+const password =
+  document.getElementById("password");
+
+const accountMessage =
+  document.getElementById(
+    "accountMessage"
+  );
+
+const loginForm =
+  document.getElementById(
+    "loginForm"
+  );
+
+const userPanel =
+  document.getElementById(
+    "userPanel"
+  );
+
+const userEmail =
+  document.getElementById(
+    "userEmail"
+  );
+
+
+/* =====================================
    وضعیت کاربر
-========================= */
+===================================== */
 
 async function updateUI(){
 
@@ -278,275 +829,398 @@ async function updateUI(){
   } =
     await supabaseClient.auth.getUser();
 
+
   if(user){
 
-    loginForm.style.display = "none";
-    userPanel.style.display = "block";
-    userEmail.textContent = user.email;
+    loginForm.style.display =
+      "none";
+
+    userPanel.style.display =
+      "block";
+
+    userEmail.textContent =
+      user.email;
 
   }else{
 
-    loginForm.style.display = "block";
-    userPanel.style.display = "none";
+    loginForm.style.display =
+      "block";
+
+    userPanel.style.display =
+      "none";
+
   }
 
+
   updatePollStatus();
+
 }
 
 
-/* =========================
+/* =====================================
    ثبت نام
-========================= */
+===================================== */
 
 document
-.getElementById("signupBtn")
-.addEventListener("click",async()=>{
+  .getElementById("signupBtn")
+  .addEventListener(
+    "click",
+    async()=>{
 
-  const e = email.value.trim();
-  const p = password.value;
+      const e =
+        email.value.trim();
 
-  if(!e || !p){
+      const p =
+        password.value;
 
-    accountMessage.textContent =
-      "ایمیل و رمز عبور را وارد کنید.";
 
-    return;
-  }
+      if(!e || !p){
 
-  if(p.length < 6){
+        accountMessage.textContent =
+          "ایمیل و رمز عبور را وارد کنید.";
 
-    accountMessage.textContent =
-      "رمز عبور باید حداقل ۶ کاراکتر باشد.";
+        return;
 
-    return;
-  }
-
-  accountMessage.textContent =
-    "در حال ثبت‌نام...";
-
-  const {error} =
-    await supabaseClient.auth.signUp({
-
-      email:e,
-      password:p,
-
-      options:{
-        emailRedirectTo:
-          REDIRECT_URI
       }
-    });
-
-  accountMessage.textContent =
-    error
-      ? "خطا: "+error.message
-      : "ثبت‌نام انجام شد. ایمیل خود را بررسی کنید.";
-});
 
 
-/* =========================
+      if(p.length < 6){
+
+        accountMessage.textContent =
+          "رمز عبور باید حداقل ۶ کاراکتر باشد.";
+
+        return;
+
+      }
+
+
+      accountMessage.textContent =
+        "در حال ثبت‌نام...";
+
+
+      const {error} =
+        await supabaseClient.auth.signUp({
+
+          email:e,
+
+          password:p,
+
+          options:{
+
+            emailRedirectTo:
+              REDIRECT_URI
+
+          }
+
+        });
+
+
+      accountMessage.textContent =
+        error
+          ? "خطا: " + error.message
+          : "ثبت‌نام انجام شد. ایمیل خود را بررسی کنید.";
+
+    }
+  );
+
+
+/* =====================================
    ورود
-========================= */
+===================================== */
 
 document
-.getElementById("loginBtn")
-.addEventListener("click",async()=>{
+  .getElementById("loginBtn")
+  .addEventListener(
+    "click",
+    async()=>{
 
-  const e = email.value.trim();
-  const p = password.value;
+      const e =
+        email.value.trim();
 
-  if(!e || !p){
-
-    accountMessage.textContent =
-      "ایمیل و رمز عبور را وارد کنید.";
-
-    return;
-  }
-
-  accountMessage.textContent =
-    "در حال ورود...";
-
-  const {error} =
-    await supabaseClient.auth.signInWithPassword({
-
-      email:e,
-      password:p
-
-    });
-
-  if(error){
-
-    accountMessage.textContent =
-      "خطا: "+error.message;
-
-    return;
-  }
-
-  accountMessage.textContent =
-    "ورود موفق بود.";
-
-  await updateUI();
-});
+      const p =
+        password.value;
 
 
-/* =========================
+      if(!e || !p){
+
+        accountMessage.textContent =
+          "ایمیل و رمز عبور را وارد کنید.";
+
+        return;
+
+      }
+
+
+      accountMessage.textContent =
+        "در حال ورود...";
+
+
+      const {error} =
+        await supabaseClient.auth
+          .signInWithPassword({
+
+            email:e,
+
+            password:p
+
+          });
+
+
+      if(error){
+
+        accountMessage.textContent =
+          "خطا: " + error.message;
+
+        return;
+
+      }
+
+
+      accountMessage.textContent =
+        "ورود موفق بود.";
+
+      await updateUI();
+
+    }
+  );
+
+
+/* =====================================
    خروج
-========================= */
+===================================== */
 
 document
-.getElementById("logoutBtn")
-.addEventListener("click",async()=>{
+  .getElementById("logoutBtn")
+  .addEventListener(
+    "click",
+    async()=>{
 
-  await supabaseClient.auth.signOut();
+      await supabaseClient.auth.signOut();
+
+      await updateUI();
+
+    }
+  );
+
+
+/* =====================================
+   Auth listener
+===================================== */
+
+supabaseClient.auth.onAuthStateChange(
+  ()=>{
+
+    updateUI();
+
+  }
+);
+
+
+/* =====================================
+   شروع برنامه
+===================================== */
+
+(async function(){
+
+  await handlePollinationsCallback();
 
   await updateUI();
-});
+
+})();
 
 
-supabaseClient.auth.onAuthStateChange(()=>{
-  updateUI();
-});
-
-updateUI();
-
-
-/* =========================
+/* =====================================
    باز کردن ساخت عکس
-========================= */
+===================================== */
 
 document
-.getElementById("openImageGenerator")
-.addEventListener("click",async()=>{
+  .getElementById("openImageGenerator")
+  .addEventListener(
+    "click",
+    async()=>{
 
-  const {
-    data:{user}
-  } =
-    await supabaseClient.auth.getUser();
-
-  if(!user){
-
-    alert(
-      "ابتدا وارد حساب کاربری شوید."
-    );
-
-    return;
-  }
-
-  if(!pollinationsAccessToken){
-
-    alert(
-      "ابتدا روی اتصال Pollinations بزنید."
-    );
-
-    return;
-  }
-
-  const box =
-    document.getElementById("imageGenerator");
-
-  box.style.display = "block";
-
-  box.scrollIntoView({
-    behavior:"smooth"
-  });
-});
+      const {
+        data:{user}
+      } =
+        await supabaseClient.auth.getUser();
 
 
-/* =========================
+      if(!user){
+
+        alert(
+          "ابتدا وارد حساب کاربری شوید."
+        );
+
+        return;
+
+      }
+
+
+      if(!pollinationsAccessToken){
+
+        alert(
+          "ابتدا روی اتصال Pollinations بزنید."
+        );
+
+        return;
+
+      }
+
+
+      const box =
+        document.getElementById(
+          "imageGenerator"
+        );
+
+
+      box.style.display =
+        "block";
+
+
+      box.scrollIntoView({
+
+        behavior:"smooth"
+
+      });
+
+    }
+  );
+
+
+/* =====================================
    ساخت تصویر
-========================= */
+===================================== */
 
 document
-.getElementById("generateImageBtn")
-.addEventListener("click",async()=>{
+  .getElementById("generateImageBtn")
+  .addEventListener(
+    "click",
+    async()=>{
 
-  const prompt =
-    document
-      .getElementById("imagePrompt")
-      .value
-      .trim();
+      const prompt =
+        document
+          .getElementById(
+            "imagePrompt"
+          )
+          .value
+          .trim();
 
-  const status =
-    document.getElementById("imageStatus");
 
-  const image =
-    document.getElementById("generatedImage");
+      const status =
+        document.getElementById(
+          "imageStatus"
+        );
 
-  if(!prompt){
 
-    status.textContent =
-      "اول توضیح تصویر را بنویس.";
+      const image =
+        document.getElementById(
+          "generatedImage"
+        );
 
-    return;
-  }
 
-  if(!pollinationsAccessToken){
+      if(!prompt){
 
-    status.textContent =
-      "ابتدا Pollinations را متصل کنید.";
+        status.textContent =
+          "اول توضیح تصویر را بنویس.";
 
-    return;
-  }
+        return;
 
-  status.textContent =
-    "در حال ساخت تصویر...";
+      }
 
-  image.style.display = "none";
 
-  try{
+      if(!pollinationsAccessToken){
 
-    const response =
-      await fetch(
-        "/.netlify/functions/generate-image",
-        {
-          method:"POST",
+        status.textContent =
+          "ابتدا Pollinations را متصل کنید.";
 
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
+        return;
 
-          body:JSON.stringify({
+      }
 
-            prompt:prompt,
 
-            access_token:
-              pollinationsAccessToken
+      status.textContent =
+        "⏳ در حال ساخت تصویر...";
 
-          })
+
+      image.style.display =
+        "none";
+
+
+      try{
+
+        const response =
+          await fetch(
+            "/.netlify/functions/generate-image",
+            {
+
+              method:"POST",
+
+              headers:{
+
+                "Content-Type":
+                  "application/json"
+
+              },
+
+              body:JSON.stringify({
+
+                prompt:prompt,
+
+                access_token:
+                  pollinationsAccessToken
+
+              })
+
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if(!response.ok){
+
+          throw new Error(
+            data.error ||
+            "ساخت تصویر ناموفق بود."
+          );
+
         }
-      );
 
-    const data =
-      await response.json();
 
-    if(!response.ok){
+        if(!data.image){
 
-      throw new Error(
-        data.error ||
-        "ساخت تصویر ناموفق بود."
-      );
+          throw new Error(
+            "تصویر دریافت نشد."
+          );
+
+        }
+
+
+        image.src =
+          data.image;
+
+        image.style.display =
+          "block";
+
+
+        status.textContent =
+          "✅ تصویر با موفقیت ساخته شد.";
+
+
+      }catch(error){
+
+        status.textContent =
+          "خطا: " +
+          error.message;
+
+        console.error(error);
+
+      }
+
     }
-
-    if(!data.image){
-
-      throw new Error(
-        "تصویر دریافت نشد."
-      );
-    }
-
-    image.src = data.image;
-    image.style.display = "block";
-
-    status.textContent =
-      "✅ تصویر با موفقیت ساخته شد.";
-
-  }catch(error){
-
-    status.textContent =
-      "خطا: "+error.message;
-  }
-
-});
+  );
 
 </script>
 
