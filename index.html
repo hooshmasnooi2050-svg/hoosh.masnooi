@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>هوش مصنوعی من</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -27,6 +33,68 @@
       color: #cbd5e1;
       font-size: 18px;
     }
+
+    /* حساب کاربری */
+
+    .account-box {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 250px;
+      padding: 18px;
+      background: #1e293b;
+      border-radius: 14px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .account-box h2 {
+      font-size: 18px;
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+
+    .account-box input {
+      width: 100%;
+      padding: 9px;
+      margin: 5px 0;
+      border: none;
+      border-radius: 7px;
+      font-size: 14px;
+    }
+
+    .account-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .account-buttons button {
+      padding: 8px 13px;
+      border: none;
+      border-radius: 7px;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .login-button {
+      background: #6366f1;
+    }
+
+    .signup-button {
+      background: #22c55e;
+    }
+
+    .account-message {
+      font-size: 13px;
+      margin-top: 10px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    /* کارت‌ها */
 
     .container {
       display: flex;
@@ -60,124 +128,285 @@
     button:hover {
       opacity: 0.85;
     }
+
+    @media (max-width: 600px) {
+      .account-box {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin: 15px auto;
+      }
+
+      header {
+        padding-top: 25px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+    }
   </style>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
-  const SUPABASE_URL = "https://bqhyuqwtzoafohhdvgqz.supabase.co";
-  const SUPABASE_ANON_KEY = "sb_publishable_L-WnuAdqQJPsHvm5y_aGCA_R0eMmwCC";
 
-  const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
-</script>
 <body>
 
+  <!-- حساب کاربری -->
+
+  <div class="account-box">
+
+    <h2>👤 حساب کاربری</h2>
+
+    <input
+      id="email"
+      type="email"
+      placeholder="ایمیل"
+    >
+
+    <input
+      id="password"
+      type="password"
+      placeholder="رمز عبور"
+    >
+
+    <div class="account-buttons">
+
+      <button
+        id="loginBtn"
+        class="login-button"
+      >
+        ورود
+      </button>
+
+      <button
+        id="signupBtn"
+        class="signup-button"
+      >
+        ثبت‌نام
+      </button>
+
+    </div>
+
+    <div
+      id="accountMessage"
+      class="account-message"
+    ></div>
+
+  </div>
+
+
+  <!-- عنوان سایت -->
+
   <header>
+
     <h1>🤖 هوش مصنوعی من</h1>
-    <p>ساخت عکس، ویدئو و آواتار با هوش مصنوعی</p>
+
+    <p>
+      ساخت عکس، ویدئو و آواتار با هوش مصنوعی
+    </p>
+
   </header>
-<!-- حساب کاربری -->
-<div style="
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 230px;
-  padding: 15px;
-  background: #1e293b;
-  border-radius: 14px;
-  text-align: center;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-">
 
-  <div style="
-    font-size: 17px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  ">
-    حساب کاربری
-  </div>
 
-  <input
-    type="email"
-    placeholder="ایمیل"
-    style="
-      width: 90%;
-      padding: 8px;
-      margin: 4px;
-      border: none;
-      border-radius: 7px;
-    "
-  >
+  <!-- امکانات سایت -->
 
-  <input
-    type="password"
-    placeholder="رمز عبور"
-    style="
-      width: 90%;
-      padding: 8px;
-      margin: 4px;
-      border: none;
-      border-radius: 7px;
-    "
-  >
-
-  <div>
-    <button
-      onclick="alert('ورود به‌زودی فعال می‌شود')"
-      style="
-        padding: 8px 15px;
-        margin: 4px;
-        border: none;
-        border-radius: 7px;
-        background: #6366f1;
-        color: white;
-        cursor: pointer;
-      "
-    >
-      ورود
-    </button>
-
-    <button
-      onclick="alert('ثبت‌نام به‌زودی فعال می‌شود')"
-      style="
-        padding: 8px 15px;
-        margin: 4px;
-        border: none;
-        border-radius: 7px;
-        background: #22c55e;
-        color: white;
-        cursor: pointer;
-      "
-    >
-      ثبت‌نام
-    </button>
-  </div>
-
-</div>
   <div class="container">
 
-    <div class="card">
-      <h2>ساخت عکس</h2>
-      <p>با هوش مصنوعی تصویر بسازید.</p>
-      <button>شروع ساخت عکس</button>
-    </div>
 
     <div class="card">
-      <h2>ساخت ویدئو</h2>
-      <p>با هوش مصنوعی ویدئو تولید کنید.</p>
-      <button>شروع ساخت ویدئو</button>
+
+      <h2>🖼️ ساخت عکس</h2>
+
+      <p>
+        با هوش مصنوعی تصویر بسازید.
+      </p>
+
+      <button>
+        شروع ساخت عکس
+      </button>
+
     </div>
 
+
     <div class="card">
-      <h2>ساخت آواتار</h2>
-      <p>آواتار هوش مصنوعی خودتان را بسازید.</p>
-      <button>شروع ساخت آواتار</button>
+
+      <h2>🎬 ساخت ویدئو</h2>
+
+      <p>
+        با هوش مصنوعی ویدئو تولید کنید.
+      </p>
+
+      <button>
+        شروع ساخت ویدئو
+      </button>
+
     </div>
+
+
+    <div class="card">
+
+      <h2>👤 ساخت آواتار</h2>
+
+      <p>
+        آواتار هوش مصنوعی خودتان را بسازید.
+      </p>
+
+      <button>
+        شروع ساخت آواتار
+      </button>
+
+    </div>
+
 
   </div>
 
+
+  <!-- اتصال به Supabase -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+  <script>
+
+    const SUPABASE_URL =
+      "https://bqhyuqwtzoafohhdvgqz.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_L-WnuAdqQJPsHvm5y_aGCA_R0eMmwCC";
+
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
+
+
+    const emailInput =
+      document.getElementById("email");
+
+    const passwordInput =
+      document.getElementById("password");
+
+    const loginBtn =
+      document.getElementById("loginBtn");
+
+    const signupBtn =
+      document.getElementById("signupBtn");
+
+    const accountMessage =
+      document.getElementById("accountMessage");
+
+
+    // ثبت نام
+
+    signupBtn.addEventListener("click", async function () {
+
+      const email =
+        emailInput.value.trim();
+
+      const password =
+        passwordInput.value;
+
+
+      if (!email || !password) {
+
+        accountMessage.textContent =
+          "لطفاً ایمیل و رمز عبور را وارد کنید.";
+
+        return;
+      }
+
+
+      if (password.length < 6) {
+
+        accountMessage.textContent =
+          "رمز عبور باید حداقل ۶ کاراکتر باشد.";
+
+        return;
+      }
+
+
+      accountMessage.textContent =
+        "در حال ثبت‌نام...";
+
+
+      const { data, error } =
+        await supabaseClient.auth.signUp({
+
+          email: email,
+
+          password: password
+
+        });
+
+
+      if (error) {
+
+        accountMessage.textContent =
+          "خطا: " + error.message;
+
+        return;
+      }
+
+
+      accountMessage.textContent =
+        "ثبت‌نام انجام شد. اگر تأیید ایمیل فعال باشد، ایمیل تأیید را بررسی کنید.";
+
+    });
+
+
+    // ورود
+
+    loginBtn.addEventListener("click", async function () {
+
+      const email =
+        emailInput.value.trim();
+
+      const password =
+        passwordInput.value;
+
+
+      if (!email || !password) {
+
+        accountMessage.textContent =
+          "لطفاً ایمیل و رمز عبور را وارد کنید.";
+
+        return;
+      }
+
+
+      accountMessage.textContent =
+        "در حال ورود...";
+
+
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+
+          email: email,
+
+          password: password
+
+        });
+
+
+      if (error) {
+
+        accountMessage.textContent =
+          "خطا: " + error.message;
+
+        return;
+      }
+
+
+      accountMessage.textContent =
+        "ورود با موفقیت انجام شد. خوش آمدید!";
+
+    });
+
+  </script>
+
+
 </body>
+
 </html>
