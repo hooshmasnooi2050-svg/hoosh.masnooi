@@ -12,8 +12,7 @@ exports.handler = async function (event) {
       };
     }
 
-    const body = JSON.parse(event.body || "{}");
-    const prompt = body.prompt;
+    const { prompt } = JSON.parse(event.body || "{}");
 
     if (!prompt) {
       return {
@@ -22,7 +21,7 @@ exports.handler = async function (event) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          error: "Please enter an image description."
+          error: "Prompt is required"
         })
       };
     }
@@ -36,13 +35,13 @@ exports.handler = async function (event) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          error: "GEMINI_API_KEY is not configured."
+          error: "GEMINI_API_KEY is not configured"
         })
       };
     }
 
     const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent",
+      "https://generativelanguage.googleapis.com/v1/models/gemini-3.1-flash-image:generateContent",
       {
         method: "POST",
 
@@ -63,7 +62,7 @@ exports.handler = async function (event) {
           ],
 
           generationConfig: {
-            responseModalities: ["TEXT", "IMAGE"]
+            responseModalities: ["IMAGE"]
           }
         })
       }
@@ -114,7 +113,7 @@ exports.handler = async function (event) {
       },
 
       body: JSON.stringify({
-        error: error.message || "Unknown server error."
+        error: error.message || "Unknown server error"
       })
     };
   }
