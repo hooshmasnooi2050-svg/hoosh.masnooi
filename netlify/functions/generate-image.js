@@ -1,122 +1,191 @@
 exports.handler = async function (event) {
-  try {
-    if (event.httpMethod !== "POST") {
-      return {
-        statusCode: 405,
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          error: "Method not allowed"
-        })
-      };
-    }
 
-    const body = JSON.parse(event.body || "{}");
-
-    const prompt = body.prompt;
-    const accessToken = body.access_token;
-
-    if (!prompt) {
-      return {
-        statusCode: 400,
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          error: "Prompt is required"
-        })
-      };
-    }
-
-    if (!accessToken) {
-      return {
-        statusCode: 401,
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          error: "Pollinations account is not connected"
-        })
-      };
-    }
-
-    if (!accessToken.startsWith("sk_")) {
-      return {
-        statusCode: 401,
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          error: "Invalid Pollinations user key"
-        })
-      };
-    }
-
-    const encodedPrompt = encodeURIComponent(prompt);
-
-    const imageUrl =
-      "https://gen.pollinations.ai/image/" +
-      encodedPrompt +
-      "?model=flux&width=1024&height=1024";
-
-    const response = await fetch(imageUrl, {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + accessToken
-      }
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-
-      return {
-        statusCode: response.status,
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          error:
-            errorText ||
-            "Image generation failed"
-        })
-      };
-    }
-
-    const imageBuffer =
-      await response.arrayBuffer();
-
-    const base64Image =
-      Buffer
-        .from(imageBuffer)
-        .toString("base64");
+  if (event.httpMethod !== "POST") {
 
     return {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        success: true,
-        image:
-          "data:image/png;base64," +
-          base64Image
-      })
-    };
+      statusCode:405,
 
-  } catch (error) {
-
-    return {
-      statusCode: 500,
-      headers: {
-        "Content-Type": "application/json"
+      headers:{
+        "Content-Type":
+          "application/json"
       },
-      body: JSON.stringify({
-        error:
-          error.message ||
-          "Unknown error"
+
+      body:JSON.stringify({
+        error:"Method Not Allowed"
       })
     };
 
   }
+
+
+  try {
+
+    const body =
+      JSON.parse(
+        event.body || "{}"
+      );
+
+
+    const prompt =
+      body.prompt;
+
+    const accessToken =
+      body.access_token;
+
+
+    if(!prompt){
+
+      return {
+        statusCode:400,
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:JSON.stringify({
+          error:
+            "Prompt وارد نشده است."
+        })
+      };
+
+    }
+
+
+    if(!accessToken){
+
+      return {
+        statusCode:401,
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:JSON.stringify({
+          error:
+            "Pollinations متصل نیست."
+        })
+      };
+
+    }
+
+
+    const imageUrl =
+      "https://gen.pollinations.ai/image/" +
+      encodeURIComponent(prompt) +
+      "?model=flux";
+
+
+    const response =
+      await fetch(
+        imageUrl,
+        {
+
+          method:"GET",
+
+          headers:{
+            "Authorization":
+              "Bearer " + accessToken
+          }
+
+        }
+      );
+
+
+    if(!response.ok){
+
+      const errorText =
+        await response.text();
+
+      return {
+        statusCode:
+          response.status,
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify({
+            error:
+              errorText ||
+              "Pollinations image generation failed."
+          })
+      };
+
+    }
+
+
+    const contentType =
+      response.headers.get(
+        "content-type"
+      ) || "image/jpeg";
+
+
+    const arrayBuffer =
+      await response.arrayBuffer();
+
+
+    const base64 =
+      Buffer
+        .from(arrayBuffer)
+        .toString("base64");
+
+
+    const image =
+      "data:" +
+      contentType +
+      ";base64," +
+      base64;
+
+
+    return {
+
+      statusCode:200,
+
+      headers:{
+        "Content-Type":
+          "application/json"
+      },
+
+      body:
+        JSON.stringify({
+          image:image
+        })
+
+    };
+
+
+  }catch(error){
+
+    console.error(
+      "Generate image error:",
+      error
+    );
+
+
+    return {
+
+      statusCode:500,
+
+      headers:{
+        "Content-Type":
+          "application/json"
+      },
+
+      body:
+        JSON.stringify({
+
+          error:
+            "خطا در ساخت تصویر: " +
+            error.message
+
+        })
+
+    };
+
+  }
+
 };
