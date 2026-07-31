@@ -87,11 +87,24 @@
       background: #22c55e;
     }
 
+    .logout-button {
+      background: #ef4444;
+      width: 100%;
+      margin-top: 10px;
+    }
+
     .account-message {
       font-size: 13px;
       margin-top: 10px;
       color: #cbd5e1;
       line-height: 1.6;
+    }
+
+    .user-email {
+      font-size: 14px;
+      color: #86efac;
+      word-break: break-word;
+      margin-bottom: 8px;
     }
 
     /* کارت‌ها */
@@ -115,7 +128,7 @@
       margin-bottom: 15px;
     }
 
-    button {
+    .card button {
       background: #6366f1;
       color: white;
       border: none;
@@ -125,11 +138,12 @@
       font-size: 16px;
     }
 
-    button:hover {
+    .card button:hover {
       opacity: 0.85;
     }
 
     @media (max-width: 600px) {
+
       .account-box {
         position: relative;
         top: auto;
@@ -151,46 +165,74 @@
 
 <body>
 
+
   <!-- حساب کاربری -->
 
-  <div class="account-box">
+  <div class="account-box" id="accountBox">
 
-    <h2>👤 حساب کاربری</h2>
+    <!-- فرم ورود -->
 
-    <input
-      id="email"
-      type="email"
-      placeholder="ایمیل"
-    >
+    <div id="loginForm">
 
-    <input
-      id="password"
-      type="password"
-      placeholder="رمز عبور"
-    >
+      <h2>👤 حساب کاربری</h2>
 
-    <div class="account-buttons">
-
-      <button
-        id="loginBtn"
-        class="login-button"
+      <input
+        id="email"
+        type="email"
+        placeholder="ایمیل"
       >
-        ورود
-      </button>
 
-      <button
-        id="signupBtn"
-        class="signup-button"
+      <input
+        id="password"
+        type="password"
+        placeholder="رمز عبور"
       >
-        ثبت‌نام
-      </button>
+
+      <div class="account-buttons">
+
+        <button
+          id="loginBtn"
+          class="login-button"
+        >
+          ورود
+        </button>
+
+        <button
+          id="signupBtn"
+          class="signup-button"
+        >
+          ثبت‌نام
+        </button>
+
+      </div>
+
+      <div
+        id="accountMessage"
+        class="account-message"
+      ></div>
 
     </div>
 
-    <div
-      id="accountMessage"
-      class="account-message"
-    ></div>
+
+    <!-- اطلاعات کاربر بعد از ورود -->
+
+    <div id="userPanel" style="display:none;">
+
+      <h2>👋 خوش آمدید</h2>
+
+      <div
+        id="userEmail"
+        class="user-email"
+      ></div>
+
+      <button
+        id="logoutBtn"
+        class="account-buttons logout-button"
+      >
+        خروج از حساب
+      </button>
+
+    </div>
 
   </div>
 
@@ -261,7 +303,7 @@
   </div>
 
 
-  <!-- اتصال به Supabase -->
+  <!-- Supabase -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -294,115 +336,216 @@
     const signupBtn =
       document.getElementById("signupBtn");
 
+    const logoutBtn =
+      document.getElementById("logoutBtn");
+
     const accountMessage =
       document.getElementById("accountMessage");
 
+    const loginForm =
+      document.getElementById("loginForm");
 
-    // ثبت نام
+    const userPanel =
+      document.getElementById("userPanel");
 
-    signupBtn.addEventListener("click", async function () {
-
-      const email =
-        emailInput.value.trim();
-
-      const password =
-        passwordInput.value;
+    const userEmail =
+      document.getElementById("userEmail");
 
 
-      if (!email || !password) {
+    /* نمایش وضعیت کاربر */
 
-        accountMessage.textContent =
-          "لطفاً ایمیل و رمز عبور را وارد کنید.";
+    async function updateUserInterface() {
 
-        return;
+      const {
+        data: {
+          user
+        }
+      } = await supabaseClient.auth.getUser();
+
+
+      if (user) {
+
+        loginForm.style.display = "none";
+
+        userPanel.style.display = "block";
+
+        userEmail.textContent =
+          user.email;
+
+      } else {
+
+        loginForm.style.display = "block";
+
+        userPanel.style.display = "none";
+
+        userEmail.textContent = "";
+
       }
 
+    }
 
-      if (password.length < 6) {
+
+    /* ثبت نام */
+
+    signupBtn.addEventListener(
+      "click",
+      async function () {
+
+        const email =
+          emailInput.value.trim();
+
+        const password =
+          passwordInput.value;
+
+
+        if (!email || !password) {
+
+          accountMessage.textContent =
+            "لطفاً ایمیل و رمز عبور را وارد کنید.";
+
+          return;
+
+        }
+
+
+        if (password.length < 6) {
+
+          accountMessage.textContent =
+            "رمز عبور باید حداقل ۶ کاراکتر باشد.";
+
+          return;
+
+        }
+
 
         accountMessage.textContent =
-          "رمز عبور باید حداقل ۶ کاراکتر باشد.";
-
-        return;
-      }
+          "در حال ثبت‌نام...";
 
 
-      accountMessage.textContent =
-        "در حال ثبت‌نام...";
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth.signUp({
+
+            email: email,
+
+            password: password,
+
+            options: {
+
+              emailRedirectTo:
+                window.location.origin
+
+            }
+
+          });
 
 
-      const { data, error } =
-        await supabaseClient.auth.signUp({
+        if (error) {
 
-          email: email,
+          accountMessage.textContent =
+            "خطا: " + error.message;
 
-          password: password
+          return;
 
-        });
+        }
 
-
-      if (error) {
 
         accountMessage.textContent =
-          "خطا: " + error.message;
+          "ثبت‌نام انجام شد. ایمیل خود را برای تأیید حساب بررسی کنید.";
 
-        return;
       }
+    );
 
 
-      accountMessage.textContent =
-        "ثبت‌نام انجام شد. اگر تأیید ایمیل فعال باشد، ایمیل تأیید را بررسی کنید.";
+    /* ورود */
 
-    });
+    loginBtn.addEventListener(
+      "click",
+      async function () {
 
+        const email =
+          emailInput.value.trim();
 
-    // ورود
-
-    loginBtn.addEventListener("click", async function () {
-
-      const email =
-        emailInput.value.trim();
-
-      const password =
-        passwordInput.value;
+        const password =
+          passwordInput.value;
 
 
-      if (!email || !password) {
+        if (!email || !password) {
+
+          accountMessage.textContent =
+            "لطفاً ایمیل و رمز عبور را وارد کنید.";
+
+          return;
+
+        }
+
 
         accountMessage.textContent =
-          "لطفاً ایمیل و رمز عبور را وارد کنید.";
-
-        return;
-      }
+          "در حال ورود...";
 
 
-      accountMessage.textContent =
-        "در حال ورود...";
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
 
 
-      const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
+        if (error) {
 
-          email: email,
+          accountMessage.textContent =
+            "خطا: " + error.message;
 
-          password: password
+          return;
 
-        });
+        }
 
-
-      if (error) {
 
         accountMessage.textContent =
-          "خطا: " + error.message;
+          "ورود موفق بود.";
 
-        return;
+        await updateUserInterface();
+
       }
+    );
 
 
-      accountMessage.textContent =
-        "ورود با موفقیت انجام شد. خوش آمدید!";
+    /* خروج */
 
-    });
+    logoutBtn.addEventListener(
+      "click",
+      async function () {
+
+        await supabaseClient.auth.signOut();
+
+        await updateUserInterface();
+
+      }
+    );
+
+
+    /* بررسی وضعیت ورود هنگام باز شدن سایت */
+
+    supabaseClient.auth.onAuthStateChange(
+      async function () {
+
+        await updateUserInterface();
+
+      }
+    );
+
+
+    /* اجرای اولیه */
+
+    updateUserInterface();
 
   </script>
 
