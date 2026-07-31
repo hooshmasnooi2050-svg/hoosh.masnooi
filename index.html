@@ -33,13 +33,11 @@
       font-size: 18px;
     }
 
-    /* حساب کاربری */
-
     .account-box {
       position: absolute;
       top: 20px;
       right: 20px;
-      width: 250px;
+      width: 270px;
       padding: 18px;
       background: #1e293b;
       border-radius: 14px;
@@ -60,19 +58,19 @@
       border-radius: 7px;
     }
 
+    button {
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      padding: 10px 15px;
+    }
+
     .account-buttons {
       display: flex;
       justify-content: center;
       gap: 5px;
       margin-top: 8px;
-    }
-
-    .account-buttons button {
-      padding: 8px 13px;
-      border: none;
-      border-radius: 7px;
-      color: white;
-      cursor: pointer;
     }
 
     .login-button {
@@ -88,6 +86,12 @@
       width: 100%;
     }
 
+    .pollinations-button {
+      background: #f59e0b;
+      width: 100%;
+      margin-top: 10px;
+    }
+
     .account-message {
       font-size: 13px;
       margin-top: 10px;
@@ -100,8 +104,6 @@
       word-break: break-word;
       margin-bottom: 10px;
     }
-
-    /* کارت‌ها */
 
     .container {
       display: flex;
@@ -124,15 +126,8 @@
 
     .card button {
       background: #6366f1;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 10px;
-      cursor: pointer;
       font-size: 16px;
     }
-
-    /* ساخت عکس */
 
     #imageGenerator {
       display: none;
@@ -156,11 +151,6 @@
 
     #generateImageBtn {
       background: #8b5cf6;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 10px;
-      cursor: pointer;
       font-size: 16px;
     }
 
@@ -197,74 +187,51 @@
 
 <body>
 
-  <!-- حساب کاربری -->
-
   <div class="account-box">
 
     <div id="loginForm">
 
       <h2>👤 حساب کاربری</h2>
 
-      <input
-        id="email"
-        type="email"
-        placeholder="ایمیل"
-      >
+      <input id="email" type="email" placeholder="ایمیل">
 
-      <input
-        id="password"
-        type="password"
-        placeholder="رمز عبور"
-      >
+      <input id="password" type="password" placeholder="رمز عبور">
 
       <div class="account-buttons">
 
-        <button
-          id="loginBtn"
-          class="login-button"
-        >
+        <button id="loginBtn" class="login-button">
           ورود
         </button>
 
-        <button
-          id="signupBtn"
-          class="signup-button"
-        >
+        <button id="signupBtn" class="signup-button">
           ثبت‌نام
         </button>
 
       </div>
 
-      <div
-        id="accountMessage"
-        class="account-message"
-      ></div>
+      <div id="accountMessage" class="account-message"></div>
 
     </div>
-
 
     <div id="userPanel" style="display:none;">
 
       <h2>👋 خوش آمدید</h2>
 
-      <div
-        id="userEmail"
-        class="user-email"
-      ></div>
+      <div id="userEmail" class="user-email"></div>
 
-      <button
-        id="logoutBtn"
-        class="account-buttons logout-button"
-      >
+      <button id="logoutBtn" class="logout-button">
         خروج از حساب
       </button>
+
+      <button id="connectPollinationsBtn" class="pollinations-button">
+        اتصال حساب Pollinations
+      </button>
+
+      <div id="pollinationsStatus" class="account-message"></div>
 
     </div>
 
   </div>
-
-
-  <!-- عنوان -->
 
   <header>
 
@@ -275,9 +242,6 @@
     </p>
 
   </header>
-
-
-  <!-- ابزار ساخت عکس -->
 
   <section id="imageGenerator">
 
@@ -300,15 +264,9 @@
 
     <div id="imageStatus"></div>
 
-    <img
-      id="generatedImage"
-      alt="تصویر تولید شده"
-    >
+    <img id="generatedImage" alt="تصویر تولید شده">
 
   </section>
-
-
-  <!-- امکانات -->
 
   <div class="container">
 
@@ -326,7 +284,6 @@
 
     </div>
 
-
     <div class="card">
 
       <h2>🎬 ساخت ویدئو</h2>
@@ -340,7 +297,6 @@
       </button>
 
     </div>
-
 
     <div class="card">
 
@@ -358,9 +314,6 @@
 
   </div>
 
-
-  <!-- Supabase -->
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
@@ -376,7 +329,6 @@
         SUPABASE_URL,
         SUPABASE_ANON_KEY
       );
-
 
     const emailInput =
       document.getElementById("email");
@@ -405,22 +357,20 @@
     const userEmail =
       document.getElementById("userEmail");
 
+    const pollinationsStatus =
+      document.getElementById("pollinationsStatus");
 
-    /* وضعیت کاربر */
 
     async function updateUserInterface() {
 
-      const {
-        data: {
-          user
-        }
-      } = await supabaseClient.auth.getUser();
+      const result =
+        await supabaseClient.auth.getUser();
 
+      const user = result.data.user;
 
       if (user) {
 
         loginForm.style.display = "none";
-
         userPanel.style.display = "block";
 
         userEmail.textContent =
@@ -429,14 +379,11 @@
       } else {
 
         loginForm.style.display = "block";
-
         userPanel.style.display = "none";
 
       }
     }
 
-
-    /* ثبت نام */
 
     signupBtn.addEventListener(
       "click",
@@ -448,7 +395,6 @@
         const password =
           passwordInput.value;
 
-
         if (!email || !password) {
 
           accountMessage.textContent =
@@ -456,7 +402,6 @@
 
           return;
         }
-
 
         if (password.length < 6) {
 
@@ -466,14 +411,10 @@
           return;
         }
 
-
         accountMessage.textContent =
           "در حال ثبت‌نام...";
 
-
-        const {
-          error
-        } =
+        const result =
           await supabaseClient.auth.signUp({
 
             email: email,
@@ -481,23 +422,19 @@
             password: password,
 
             options: {
-
               emailRedirectTo:
                 window.location.origin
-
             }
 
           });
 
-
-        if (error) {
+        if (result.error) {
 
           accountMessage.textContent =
-            "خطا: " + error.message;
+            "خطا: " + result.error.message;
 
           return;
         }
-
 
         accountMessage.textContent =
           "ثبت‌نام انجام شد. ایمیل خود را بررسی کنید.";
@@ -505,8 +442,6 @@
       }
     );
 
-
-    /* ورود */
 
     loginBtn.addEventListener(
       "click",
@@ -518,7 +453,6 @@
         const password =
           passwordInput.value;
 
-
         if (!email || !password) {
 
           accountMessage.textContent =
@@ -527,14 +461,10 @@
           return;
         }
 
-
         accountMessage.textContent =
           "در حال ورود...";
 
-
-        const {
-          error
-        } =
+        const result =
           await supabaseClient.auth.signInWithPassword({
 
             email: email,
@@ -543,15 +473,13 @@
 
           });
 
-
-        if (error) {
+        if (result.error) {
 
           accountMessage.textContent =
-            "خطا: " + error.message;
+            "خطا: " + result.error.message;
 
           return;
         }
-
 
         accountMessage.textContent =
           "ورود موفق بود.";
@@ -561,8 +489,6 @@
       }
     );
 
-
-    /* خروج */
 
     logoutBtn.addEventListener(
       "click",
@@ -576,8 +502,6 @@
     );
 
 
-    /* بررسی ورود */
-
     supabaseClient.auth.onAuthStateChange(
       async function () {
 
@@ -590,23 +514,16 @@
     updateUserInterface();
 
 
-    /* باز کردن ابزار ساخت عکس */
-
     document
       .getElementById("openImageGenerator")
       .addEventListener(
         "click",
         async function () {
 
-          const {
-            data: {
-              user
-            }
-          } =
+          const result =
             await supabaseClient.auth.getUser();
 
-
-          if (!user) {
+          if (!result.data.user) {
 
             alert(
               "برای ساخت عکس ابتدا وارد حساب خود شوید."
@@ -615,11 +532,9 @@
             return;
           }
 
-
           document
             .getElementById("imageGenerator")
             .style.display = "block";
-
 
           document
             .getElementById("imageGenerator")
@@ -631,7 +546,21 @@
       );
 
 
-    /* ساخت عکس */
+    document
+      .getElementById("connectPollinationsBtn")
+      .addEventListener(
+        "click",
+        function () {
+
+          pollinationsStatus.textContent =
+            "در حال اتصال به Pollinations...";
+
+          window.location.href =
+            "/.netlify/functions/pollinations-auth";
+
+        }
+      );
+
 
     document
       .getElementById("generateImageBtn")
@@ -653,7 +582,6 @@
             document
               .getElementById("generatedImage");
 
-
           if (!prompt) {
 
             status.textContent =
@@ -662,12 +590,10 @@
             return;
           }
 
-
           status.textContent =
             "در حال ساخت تصویر...";
 
           image.style.display = "none";
-
 
           try {
 
@@ -690,10 +616,8 @@
                 }
               );
 
-
             const data =
               await response.json();
-
 
             if (!response.ok) {
 
@@ -704,40 +628,7 @@
 
             }
 
-
-            let imageData = null;
-
-
-            if (
-              data.candidates &&
-              data.candidates[0] &&
-              data.candidates[0].content &&
-              data.candidates[0].content.parts
-            ) {
-
-              for (
-                const part
-                of data.candidates[0].content.parts
-              ) {
-
-                if (
-                  part.inlineData &&
-                  part.inlineData.data
-                ) {
-
-                  imageData =
-                    part.inlineData.data;
-
-                  break;
-
-                }
-
-              }
-
-            }
-
-
-            if (!imageData) {
+            if (!data.image) {
 
               throw new Error(
                 "تصویری از سرویس دریافت نشد."
@@ -745,10 +636,8 @@
 
             }
 
-
             image.src =
-              "data:image/png;base64," +
-              imageData;
+              data.image;
 
             image.style.display =
               "block";
