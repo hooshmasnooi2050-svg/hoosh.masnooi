@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>هوش مصنوعی من</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -37,53 +34,41 @@
       position: absolute;
       top: 20px;
       right: 20px;
-      width: 250px;
+      width: 270px;
       padding: 18px;
       background: #1e293b;
       border-radius: 14px;
       text-align: center;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-    }
-
-    .account-box h2 {
-      font-size: 18px;
-      margin-top: 0;
+      box-shadow: 0 5px 20px rgba(0,0,0,.3);
     }
 
     .account-box input {
       width: 100%;
-      padding: 9px;
+      padding: 10px;
       margin: 5px 0;
       border: none;
       border-radius: 7px;
     }
 
+    button {
+      border: none;
+      border-radius: 9px;
+      padding: 10px 16px;
+      color: white;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .login-button { background: #6366f1; }
+    .signup-button { background: #22c55e; }
+    .logout-button { background: #ef4444; width: 100%; }
+    .connect-button { background: #f59e0b; width: 100%; margin-top: 10px; }
+
     .account-buttons {
       display: flex;
       justify-content: center;
-      gap: 5px;
+      gap: 6px;
       margin-top: 8px;
-    }
-
-    .account-buttons button {
-      padding: 8px 13px;
-      border: none;
-      border-radius: 7px;
-      color: white;
-      cursor: pointer;
-    }
-
-    .login-button {
-      background: #6366f1;
-    }
-
-    .signup-button {
-      background: #22c55e;
-    }
-
-    .logout-button {
-      background: #ef4444;
-      width: 100%;
     }
 
     .account-message {
@@ -114,18 +99,8 @@
       border-radius: 20px;
     }
 
-    .card h2 {
-      margin-bottom: 15px;
-    }
-
     .card button {
       background: #6366f1;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
     }
 
     #imageGenerator {
@@ -150,12 +125,6 @@
 
     #generateImageBtn {
       background: #8b5cf6;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
     }
 
     #imageStatus {
@@ -199,65 +168,44 @@
 
       <h2>👤 حساب کاربری</h2>
 
-      <input
-        id="email"
-        type="email"
-        placeholder="ایمیل"
-      >
+      <input id="email" type="email" placeholder="ایمیل">
 
-      <input
-        id="password"
-        type="password"
-        placeholder="رمز عبور"
-      >
+      <input id="password" type="password" placeholder="رمز عبور">
 
       <div class="account-buttons">
-
-        <button
-          id="loginBtn"
-          class="login-button"
-        >
-          ورود
-        </button>
-
-        <button
-          id="signupBtn"
-          class="signup-button"
-        >
-          ثبت‌نام
-        </button>
-
+        <button id="loginBtn" class="login-button">ورود</button>
+        <button id="signupBtn" class="signup-button">ثبت‌نام</button>
       </div>
 
-      <div
-        id="accountMessage"
-        class="account-message"
-      ></div>
+      <button id="connectPollinationsBtn" class="connect-button">
+        🔑 اتصال به Pollinations
+      </button>
+
+      <div id="accountMessage" class="account-message"></div>
 
     </div>
+
 
     <div id="userPanel" style="display:none;">
 
       <h2>👋 خوش آمدید</h2>
 
-      <div
-        id="userEmail"
-        class="user-email"
-      ></div>
+      <div id="userEmail" class="user-email"></div>
 
-      <button
-        id="logoutBtn"
-        class="account-buttons logout-button"
-      >
+      <button id="connectPollinationsBtn2" class="connect-button">
+        🔑 اتصال به Pollinations
+      </button>
+
+      <button id="logoutBtn" class="logout-button" style="margin-top:8px;">
         خروج از حساب
       </button>
+
+      <div id="connectionMessage" class="account-message"></div>
 
     </div>
 
   </div>
 
-
-  <!-- عنوان -->
 
   <header>
 
@@ -270,7 +218,7 @@
   </header>
 
 
-  <!-- ساخت عکس -->
+  <!-- ساخت تصویر -->
 
   <section id="imageGenerator">
 
@@ -293,15 +241,10 @@
 
     <div id="imageStatus"></div>
 
-    <img
-      id="generatedImage"
-      alt="تصویر تولید شده"
-    >
+    <img id="generatedImage" alt="تصویر تولید شده">
 
   </section>
 
-
-  <!-- امکانات -->
 
   <div class="container">
 
@@ -319,6 +262,7 @@
 
     </div>
 
+
     <div class="card">
 
       <h2>🎬 ساخت ویدئو</h2>
@@ -327,11 +271,10 @@
         با هوش مصنوعی ویدئو تولید کنید.
       </p>
 
-      <button>
-        به‌زودی
-      </button>
+      <button>به‌زودی</button>
 
     </div>
+
 
     <div class="card">
 
@@ -341,9 +284,7 @@
         آواتار هوش مصنوعی خودتان را بسازید.
       </p>
 
-      <button>
-        به‌زودی
-      </button>
+      <button>به‌زودی</button>
 
     </div>
 
@@ -387,6 +328,9 @@
     const accountMessage =
       document.getElementById("accountMessage");
 
+    const connectionMessage =
+      document.getElementById("connectionMessage");
+
     const loginForm =
       document.getElementById("loginForm");
 
@@ -397,170 +341,253 @@
       document.getElementById("userEmail");
 
 
-    /* وضعیت کاربر */
+    /* -------------------------
+       وضعیت کاربر
+    ------------------------- */
 
     async function updateUserInterface() {
 
       const {
-        data: {
-          user
-        }
+        data: { user }
       } = await supabaseClient.auth.getUser();
 
       if (user) {
 
         loginForm.style.display = "none";
-
         userPanel.style.display = "block";
 
-        userEmail.textContent =
-          user.email;
+        userEmail.textContent = user.email;
 
       } else {
 
         loginForm.style.display = "block";
-
         userPanel.style.display = "none";
 
       }
     }
 
 
-    /* ثبت نام */
+    /* -------------------------
+       ثبت نام
+    ------------------------- */
 
-    signupBtn.addEventListener(
-      "click",
-      async function () {
+    signupBtn.addEventListener("click", async function () {
 
-        const email =
-          emailInput.value.trim();
+      const email =
+        emailInput.value.trim();
 
-        const password =
-          passwordInput.value;
+      const password =
+        passwordInput.value;
 
-        if (!email || !password) {
-
-          accountMessage.textContent =
-            "لطفاً ایمیل و رمز عبور را وارد کنید.";
-
-          return;
-        }
-
-        if (password.length < 6) {
-
-          accountMessage.textContent =
-            "رمز عبور باید حداقل ۶ کاراکتر باشد.";
-
-          return;
-        }
+      if (!email || !password) {
 
         accountMessage.textContent =
-          "در حال ثبت‌نام...";
+          "لطفاً ایمیل و رمز عبور را وارد کنید.";
 
+        return;
+      }
 
-        const {
-          error
-        } =
-          await supabaseClient.auth.signUp({
-
-            email: email,
-
-            password: password,
-
-            options: {
-
-              emailRedirectTo:
-                window.location.origin + "/"
-
-            }
-
-          });
-
-
-        if (error) {
-
-          accountMessage.textContent =
-            "خطا: " + error.message;
-
-          return;
-        }
-
+      if (password.length < 6) {
 
         accountMessage.textContent =
-          "ثبت‌نام انجام شد. ایمیل خود را بررسی کنید.";
+          "رمز عبور باید حداقل ۶ کاراکتر باشد.";
+
+        return;
+      }
+
+      accountMessage.textContent =
+        "در حال ثبت‌نام...";
+
+      const { error } =
+        await supabaseClient.auth.signUp({
+
+          email: email,
+
+          password: password,
+
+          options: {
+
+            emailRedirectTo:
+              window.location.origin
+
+          }
+
+        });
+
+      if (error) {
+
+        accountMessage.textContent =
+          "خطا: " + error.message;
+
+        return;
+      }
+
+      accountMessage.textContent =
+        "ثبت‌نام انجام شد. ایمیل خود را بررسی کنید.";
+
+    });
+
+
+    /* -------------------------
+       ورود
+    ------------------------- */
+
+    loginBtn.addEventListener("click", async function () {
+
+      const email =
+        emailInput.value.trim();
+
+      const password =
+        passwordInput.value;
+
+      if (!email || !password) {
+
+        accountMessage.textContent =
+          "لطفاً ایمیل و رمز عبور را وارد کنید.";
+
+        return;
+      }
+
+      accountMessage.textContent =
+        "در حال ورود...";
+
+      const { error } =
+        await supabaseClient.auth.signInWithPassword({
+
+          email: email,
+
+          password: password
+
+        });
+
+      if (error) {
+
+        accountMessage.textContent =
+          "خطا: " + error.message;
+
+        return;
+      }
+
+      accountMessage.textContent =
+        "ورود موفق بود.";
+
+      await updateUserInterface();
+
+    });
+
+
+    /* -------------------------
+       خروج
+    ------------------------- */
+
+    logoutBtn.addEventListener("click", async function () {
+
+      await supabaseClient.auth.signOut();
+
+      await updateUserInterface();
+
+    });
+
+
+    /* -------------------------
+       اتصال Pollinations
+    ------------------------- */
+
+    function connectPollinations() {
+
+      /*
+        کلید pk_ را داخل HTML قرار نمی‌دهیم.
+
+        کاربر باید از طریق App Pollinations
+        اتصال حساب خودش را انجام دهد.
+      */
+
+      const callbackUrl =
+        encodeURIComponent(
+          window.location.origin
+        );
+
+      const pollinationsUrl =
+        "https://enter.pollinations.ai/oauth/authorize" +
+        "?redirect_uri=" +
+        callbackUrl;
+
+      window.location.href =
+        pollinationsUrl;
+    }
+
+
+    document
+      .getElementById("connectPollinationsBtn")
+      .addEventListener(
+        "click",
+        connectPollinations
+      );
+
+
+    document
+      .getElementById("connectPollinationsBtn2")
+      .addEventListener(
+        "click",
+        connectPollinations
+      );
+
+
+    /* -------------------------
+       دریافت توکن از URL
+    ------------------------- */
+
+    async function checkPollinationsConnection() {
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+      const accessToken =
+        params.get("access_token");
+
+      if (accessToken) {
+
+        sessionStorage.setItem(
+          "pollinations_access_token",
+          accessToken
+        );
+
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname
+        );
+
+        if (connectionMessage) {
+
+          connectionMessage.textContent =
+            "✅ حساب Pollinations متصل شد.";
+
+        }
+
+        return;
+      }
+
+      const savedToken =
+        sessionStorage.getItem(
+          "pollinations_access_token"
+        );
+
+      if (savedToken && connectionMessage) {
+
+        connectionMessage.textContent =
+          "✅ حساب Pollinations متصل است.";
 
       }
-    );
+
+    }
 
 
-    /* ورود */
-
-    loginBtn.addEventListener(
-      "click",
-      async function () {
-
-        const email =
-          emailInput.value.trim();
-
-        const password =
-          passwordInput.value;
-
-        if (!email || !password) {
-
-          accountMessage.textContent =
-            "لطفاً ایمیل و رمز عبور را وارد کنید.";
-
-          return;
-        }
-
-        accountMessage.textContent =
-          "در حال ورود...";
-
-
-        const {
-          error
-        } =
-          await supabaseClient.auth.signInWithPassword({
-
-            email: email,
-
-            password: password
-
-          });
-
-
-        if (error) {
-
-          accountMessage.textContent =
-            "خطا: " + error.message;
-
-          return;
-        }
-
-        accountMessage.textContent =
-          "ورود موفق بود.";
-
-        await updateUserInterface();
-
-      }
-    );
-
-
-    /* خروج */
-
-    logoutBtn.addEventListener(
-      "click",
-      async function () {
-
-        await supabaseClient.auth.signOut();
-
-        await updateUserInterface();
-
-      }
-    );
-
-
-    /* بررسی ورود */
+    /* -------------------------
+       بررسی ورود
+    ------------------------- */
 
     supabaseClient.auth.onAuthStateChange(
       async function () {
@@ -573,8 +600,12 @@
 
     updateUserInterface();
 
+    checkPollinationsConnection();
 
-    /* باز کردن ابزار ساخت عکس */
+
+    /* -------------------------
+       باز کردن ساخت عکس
+    ------------------------- */
 
     document
       .getElementById("openImageGenerator")
@@ -583,12 +614,9 @@
         async function () {
 
           const {
-            data: {
-              user
-            }
+            data: { user }
           } =
             await supabaseClient.auth.getUser();
-
 
           if (!user) {
 
@@ -599,11 +627,9 @@
             return;
           }
 
-
           document
             .getElementById("imageGenerator")
             .style.display = "block";
-
 
           document
             .getElementById("imageGenerator")
@@ -615,7 +641,9 @@
       );
 
 
-    /* ساخت عکس */
+    /* -------------------------
+       ساخت عکس
+    ------------------------- */
 
     document
       .getElementById("generateImageBtn")
@@ -647,10 +675,26 @@
           }
 
 
+          const accessToken =
+            sessionStorage.getItem(
+              "pollinations_access_token"
+            );
+
+
+          if (!accessToken) {
+
+            status.textContent =
+              "ابتدا حساب Pollinations را متصل کنید.";
+
+            return;
+          }
+
+
           status.textContent =
             "در حال ساخت تصویر...";
 
-          image.style.display = "none";
+          image.style.display =
+            "none";
 
 
           try {
@@ -663,12 +707,20 @@
                   method: "POST",
 
                   headers: {
+
                     "Content-Type":
                       "application/json"
+
                   },
 
                   body: JSON.stringify({
-                    prompt: prompt
+
+                    prompt:
+                      prompt,
+
+                    access_token:
+                      accessToken
+
                   })
 
                 }
@@ -689,11 +741,6 @@
             }
 
 
-            /*
-              فانکشن ما تصویر را
-              داخل data.image برمی‌گرداند.
-            */
-
             if (!data.image) {
 
               throw new Error(
@@ -710,7 +757,8 @@
               "block";
 
             status.textContent =
-              "تصویر با موفقیت ساخته شد.";
+              "✅ تصویر با موفقیت ساخته شد.";
+
 
           } catch (error) {
 
@@ -726,5 +774,4 @@
   </script>
 
 </body>
-
 </html>
