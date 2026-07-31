@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>هوش مصنوعی من</title>
 
   <style>
@@ -45,13 +44,12 @@
       background: #1e293b;
       border-radius: 14px;
       text-align: center;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
     }
 
     .account-box h2 {
       font-size: 18px;
       margin-top: 0;
-      margin-bottom: 12px;
     }
 
     .account-box input {
@@ -60,7 +58,6 @@
       margin: 5px 0;
       border: none;
       border-radius: 7px;
-      font-size: 14px;
     }
 
     .account-buttons {
@@ -76,7 +73,6 @@
       border-radius: 7px;
       color: white;
       cursor: pointer;
-      font-size: 14px;
     }
 
     .login-button {
@@ -90,21 +86,19 @@
     .logout-button {
       background: #ef4444;
       width: 100%;
-      margin-top: 10px;
     }
 
     .account-message {
       font-size: 13px;
       margin-top: 10px;
       color: #cbd5e1;
-      line-height: 1.6;
     }
 
     .user-email {
-      font-size: 14px;
       color: #86efac;
+      font-size: 14px;
       word-break: break-word;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     /* کارت‌ها */
@@ -119,7 +113,7 @@
 
     .card {
       background: #1e293b;
-      width: 250px;
+      width: 280px;
       padding: 30px 20px;
       border-radius: 20px;
     }
@@ -138,12 +132,51 @@
       font-size: 16px;
     }
 
-    .card button:hover {
-      opacity: 0.85;
+    /* ساخت عکس */
+
+    #imageGenerator {
+      display: none;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 25px;
+      background: #1e293b;
+      border-radius: 20px;
+    }
+
+    #imagePrompt {
+      width: 100%;
+      min-height: 100px;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      resize: vertical;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    #generateImageBtn {
+      background: #8b5cf6;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #imageStatus {
+      margin-top: 15px;
+      color: #cbd5e1;
+    }
+
+    #generatedImage {
+      max-width: 100%;
+      margin-top: 20px;
+      border-radius: 15px;
+      display: none;
     }
 
     @media (max-width: 600px) {
-
       .account-box {
         position: relative;
         top: auto;
@@ -162,15 +195,11 @@
   </style>
 </head>
 
-
 <body>
-
 
   <!-- حساب کاربری -->
 
-  <div class="account-box" id="accountBox">
-
-    <!-- فرم ورود -->
+  <div class="account-box">
 
     <div id="loginForm">
 
@@ -214,8 +243,6 @@
     </div>
 
 
-    <!-- اطلاعات کاربر بعد از ورود -->
-
     <div id="userPanel" style="display:none;">
 
       <h2>👋 خوش آمدید</h2>
@@ -237,7 +264,7 @@
   </div>
 
 
-  <!-- عنوان سایت -->
+  <!-- عنوان -->
 
   <header>
 
@@ -250,10 +277,40 @@
   </header>
 
 
-  <!-- امکانات سایت -->
+  <!-- ابزار ساخت عکس -->
+
+  <section id="imageGenerator">
+
+    <h2>🖼️ ساخت عکس با هوش مصنوعی</h2>
+
+    <p>
+      توضیح بده چه تصویری می‌خواهی بسازی.
+    </p>
+
+    <textarea
+      id="imagePrompt"
+      placeholder="مثلاً: یک گربه سفید در یک شهر آینده‌نگر، سبک سینمایی"
+    ></textarea>
+
+    <br>
+
+    <button id="generateImageBtn">
+      ساخت تصویر
+    </button>
+
+    <div id="imageStatus"></div>
+
+    <img
+      id="generatedImage"
+      alt="تصویر تولید شده"
+    >
+
+  </section>
+
+
+  <!-- امکانات -->
 
   <div class="container">
-
 
     <div class="card">
 
@@ -263,7 +320,7 @@
         با هوش مصنوعی تصویر بسازید.
       </p>
 
-      <button>
+      <button id="openImageGenerator">
         شروع ساخت عکس
       </button>
 
@@ -279,7 +336,7 @@
       </p>
 
       <button>
-        شروع ساخت ویدئو
+        به‌زودی
       </button>
 
     </div>
@@ -294,11 +351,10 @@
       </p>
 
       <button>
-        شروع ساخت آواتار
+        به‌زودی
       </button>
 
     </div>
-
 
   </div>
 
@@ -307,7 +363,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
   <script>
 
     const SUPABASE_URL =
@@ -315,7 +370,6 @@
 
     const SUPABASE_ANON_KEY =
       "sb_publishable_L-WnuAdqQJPsHvm5y_aGCA_R0eMmwCC";
-
 
     const supabaseClient =
       window.supabase.createClient(
@@ -352,7 +406,7 @@
       document.getElementById("userEmail");
 
 
-    /* نمایش وضعیت کاربر */
+    /* وضعیت کاربر */
 
     async function updateUserInterface() {
 
@@ -378,10 +432,7 @@
 
         userPanel.style.display = "none";
 
-        userEmail.textContent = "";
-
       }
-
     }
 
 
@@ -404,7 +455,6 @@
             "لطفاً ایمیل و رمز عبور را وارد کنید.";
 
           return;
-
         }
 
 
@@ -414,7 +464,6 @@
             "رمز عبور باید حداقل ۶ کاراکتر باشد.";
 
           return;
-
         }
 
 
@@ -423,7 +472,6 @@
 
 
         const {
-          data,
           error
         } =
           await supabaseClient.auth.signUp({
@@ -448,12 +496,11 @@
             "خطا: " + error.message;
 
           return;
-
         }
 
 
         accountMessage.textContent =
-          "ثبت‌نام انجام شد. ایمیل خود را برای تأیید حساب بررسی کنید.";
+          "ثبت‌نام انجام شد. ایمیل خود را بررسی کنید.";
 
       }
     );
@@ -478,7 +525,6 @@
             "لطفاً ایمیل و رمز عبور را وارد کنید.";
 
           return;
-
         }
 
 
@@ -487,7 +533,6 @@
 
 
         const {
-          data,
           error
         } =
           await supabaseClient.auth.signInWithPassword({
@@ -505,7 +550,6 @@
             "خطا: " + error.message;
 
           return;
-
         }
 
 
@@ -532,7 +576,7 @@
     );
 
 
-    /* بررسی وضعیت ورود هنگام باز شدن سایت */
+    /* بررسی ورود */
 
     supabaseClient.auth.onAuthStateChange(
       async function () {
@@ -543,13 +587,187 @@
     );
 
 
-    /* اجرای اولیه */
-
     updateUserInterface();
+
+
+    /* باز کردن ابزار ساخت عکس */
+
+    document
+      .getElementById("openImageGenerator")
+      .addEventListener(
+        "click",
+        async function () {
+
+          const {
+            data: {
+              user
+            }
+          } =
+            await supabaseClient.auth.getUser();
+
+
+          if (!user) {
+
+            alert(
+              "برای ساخت عکس ابتدا وارد حساب خود شوید."
+            );
+
+            return;
+          }
+
+
+          document
+            .getElementById("imageGenerator")
+            .style.display = "block";
+
+
+          document
+            .getElementById("imageGenerator")
+            .scrollIntoView({
+              behavior: "smooth"
+            });
+
+        }
+      );
+
+
+    /* ساخت عکس */
+
+    document
+      .getElementById("generateImageBtn")
+      .addEventListener(
+        "click",
+        async function () {
+
+          const prompt =
+            document
+              .getElementById("imagePrompt")
+              .value
+              .trim();
+
+          const status =
+            document
+              .getElementById("imageStatus");
+
+          const image =
+            document
+              .getElementById("generatedImage");
+
+
+          if (!prompt) {
+
+            status.textContent =
+              "اول توضیح تصویر را بنویس.";
+
+            return;
+          }
+
+
+          status.textContent =
+            "در حال ساخت تصویر...";
+
+          image.style.display = "none";
+
+
+          try {
+
+            const response =
+              await fetch(
+                "/.netlify/functions/generate-image",
+                {
+
+                  method: "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json"
+                  },
+
+                  body: JSON.stringify({
+                    prompt: prompt
+                  })
+
+                }
+              );
+
+
+            const data =
+              await response.json();
+
+
+            if (!response.ok) {
+
+              throw new Error(
+                data.error ||
+                "ساخت تصویر ناموفق بود."
+              );
+
+            }
+
+
+            let imageData = null;
+
+
+            if (
+              data.candidates &&
+              data.candidates[0] &&
+              data.candidates[0].content &&
+              data.candidates[0].content.parts
+            ) {
+
+              for (
+                const part
+                of data.candidates[0].content.parts
+              ) {
+
+                if (
+                  part.inlineData &&
+                  part.inlineData.data
+                ) {
+
+                  imageData =
+                    part.inlineData.data;
+
+                  break;
+
+                }
+
+              }
+
+            }
+
+
+            if (!imageData) {
+
+              throw new Error(
+                "تصویری از سرویس دریافت نشد."
+              );
+
+            }
+
+
+            image.src =
+              "data:image/png;base64," +
+              imageData;
+
+            image.style.display =
+              "block";
+
+            status.textContent =
+              "تصویر با موفقیت ساخته شد.";
+
+          } catch (error) {
+
+            status.textContent =
+              "خطا: " +
+              error.message;
+
+          }
+
+        }
+      );
 
   </script>
 
-
 </body>
-
 </html>
