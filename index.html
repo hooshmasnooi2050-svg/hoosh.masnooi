@@ -34,7 +34,7 @@
       position: absolute;
       top: 20px;
       right: 20px;
-      width: 270px;
+      width: 280px;
       padding: 18px;
       background: #1e293b;
       border-radius: 14px;
@@ -53,7 +53,7 @@
     button {
       border: none;
       border-radius: 9px;
-      padding: 10px 16px;
+      padding: 11px 18px;
       color: white;
       cursor: pointer;
       font-size: 15px;
@@ -62,7 +62,7 @@
     .login-button { background: #6366f1; }
     .signup-button { background: #22c55e; }
     .logout-button { background: #ef4444; width: 100%; }
-    .connect-button { background: #f59e0b; width: 100%; margin-top: 10px; }
+    .pollinations-button { background: #f59e0b; width: 100%; margin-top: 8px; }
 
     .account-buttons {
       display: flex;
@@ -160,8 +160,6 @@
 
 <body>
 
-  <!-- حساب کاربری -->
-
   <div class="account-box">
 
     <div id="loginForm">
@@ -169,7 +167,6 @@
       <h2>👤 حساب کاربری</h2>
 
       <input id="email" type="email" placeholder="ایمیل">
-
       <input id="password" type="password" placeholder="رمز عبور">
 
       <div class="account-buttons">
@@ -177,14 +174,13 @@
         <button id="signupBtn" class="signup-button">ثبت‌نام</button>
       </div>
 
-      <button id="connectPollinationsBtn" class="connect-button">
-        🔑 اتصال به Pollinations
+      <button id="connectPollinationsBtn" class="pollinations-button">
+        🔗 اتصال Pollinations
       </button>
 
       <div id="accountMessage" class="account-message"></div>
 
     </div>
-
 
     <div id="userPanel" style="display:none;">
 
@@ -192,41 +188,30 @@
 
       <div id="userEmail" class="user-email"></div>
 
-      <button id="connectPollinationsBtn2" class="connect-button">
-        🔑 اتصال به Pollinations
+      <div id="pollinationsStatus" class="account-message"></div>
+
+      <button id="connectPollinationsBtn2" class="pollinations-button">
+        🔗 اتصال Pollinations
       </button>
 
       <button id="logoutBtn" class="logout-button" style="margin-top:8px;">
         خروج از حساب
       </button>
 
-      <div id="connectionMessage" class="account-message"></div>
-
     </div>
 
   </div>
 
-
   <header>
-
     <h1>🤖 هوش مصنوعی من</h1>
-
-    <p>
-      ساخت عکس، ویدئو و آواتار با هوش مصنوعی
-    </p>
-
+    <p>ساخت عکس، ویدئو و آواتار با هوش مصنوعی</p>
   </header>
-
-
-  <!-- ساخت تصویر -->
 
   <section id="imageGenerator">
 
     <h2>🖼️ ساخت عکس با هوش مصنوعی</h2>
 
-    <p>
-      توضیح بده چه تصویری می‌خواهی بسازی.
-    </p>
+    <p>توضیح بده چه تصویری می‌خواهی بسازی.</p>
 
     <textarea
       id="imagePrompt"
@@ -245,53 +230,29 @@
 
   </section>
 
-
   <div class="container">
 
     <div class="card">
-
       <h2>🖼️ ساخت عکس</h2>
-
-      <p>
-        با هوش مصنوعی تصویر بسازید.
-      </p>
-
+      <p>با هوش مصنوعی تصویر بسازید.</p>
       <button id="openImageGenerator">
         شروع ساخت عکس
       </button>
-
     </div>
 
-
     <div class="card">
-
       <h2>🎬 ساخت ویدئو</h2>
-
-      <p>
-        با هوش مصنوعی ویدئو تولید کنید.
-      </p>
-
+      <p>با هوش مصنوعی ویدئو تولید کنید.</p>
       <button>به‌زودی</button>
-
     </div>
 
-
     <div class="card">
-
       <h2>👤 ساخت آواتار</h2>
-
-      <p>
-        آواتار هوش مصنوعی خودتان را بسازید.
-      </p>
-
+      <p>آواتار هوش مصنوعی خودتان را بسازید.</p>
       <button>به‌زودی</button>
-
     </div>
 
   </div>
-
-
-  <!-- Supabase -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -303,12 +264,115 @@
     const SUPABASE_ANON_KEY =
       "sb_publishable_L-WnuAdqQJPsHvm5y_aGCA_R0eMmwCC";
 
+    const POLLINATIONS_CLIENT_ID =
+      "pk_H8d6aMA8xPreKWE4";
+
     const supabaseClient =
       window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_ANON_KEY
       );
 
+
+    /*
+      --------------------------------------------------
+      دریافت کلید Pollinations بعد از برگشت از BYOP
+      --------------------------------------------------
+    */
+
+    function savePollinationsKeyFromUrl() {
+
+      const hash =
+        window.location.hash;
+
+      if (!hash) return;
+
+      const params =
+        new URLSearchParams(
+          hash.substring(1)
+        );
+
+      const apiKey =
+        params.get("api_key");
+
+      if (apiKey) {
+
+        localStorage.setItem(
+          "pollinations_api_key",
+          apiKey
+        );
+
+        /*
+          کلید را از URL پاک می‌کنیم
+        */
+
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname
+        );
+
+        alert(
+          "اتصال Pollinations با موفقیت انجام شد."
+        );
+      }
+    }
+
+
+    savePollinationsKeyFromUrl();
+
+
+    /*
+      --------------------------------------------------
+      اتصال به Pollinations
+      --------------------------------------------------
+    */
+
+    function connectPollinations() {
+
+      const redirectUri =
+        window.location.origin + "/";
+
+      const url =
+        "https://enter.pollinations.ai/authorize" +
+        "?client_id=" +
+        encodeURIComponent(
+          POLLINATIONS_CLIENT_ID
+        ) +
+        "&redirect_uri=" +
+        encodeURIComponent(
+          redirectUri
+        );
+
+      window.location.href = url;
+    }
+
+
+    document
+      .getElementById(
+        "connectPollinationsBtn"
+      )
+      .addEventListener(
+        "click",
+        connectPollinations
+      );
+
+
+    document
+      .getElementById(
+        "connectPollinationsBtn2"
+      )
+      .addEventListener(
+        "click",
+        connectPollinations
+      );
+
+
+    /*
+      --------------------------------------------------
+      عناصر حساب
+      --------------------------------------------------
+    */
 
     const emailInput =
       document.getElementById("email");
@@ -328,9 +392,6 @@
     const accountMessage =
       document.getElementById("accountMessage");
 
-    const connectionMessage =
-      document.getElementById("connectionMessage");
-
     const loginForm =
       document.getElementById("loginForm");
 
@@ -340,253 +401,205 @@
     const userEmail =
       document.getElementById("userEmail");
 
+    const pollinationsStatus =
+      document.getElementById(
+        "pollinationsStatus"
+      );
 
-    /* -------------------------
-       وضعیت کاربر
-    ------------------------- */
+
+    /*
+      --------------------------------------------------
+      وضعیت کاربر
+      --------------------------------------------------
+    */
 
     async function updateUserInterface() {
 
       const {
         data: { user }
-      } = await supabaseClient.auth.getUser();
+      } =
+        await supabaseClient.auth.getUser();
 
       if (user) {
 
-        loginForm.style.display = "none";
-        userPanel.style.display = "block";
+        loginForm.style.display =
+          "none";
 
-        userEmail.textContent = user.email;
+        userPanel.style.display =
+          "block";
+
+        userEmail.textContent =
+          user.email;
 
       } else {
 
-        loginForm.style.display = "block";
-        userPanel.style.display = "none";
+        loginForm.style.display =
+          "block";
 
+        userPanel.style.display =
+          "none";
+      }
+
+
+      updatePollinationsStatus();
+    }
+
+
+    /*
+      --------------------------------------------------
+      وضعیت Pollinations
+      --------------------------------------------------
+    */
+
+    function updatePollinationsStatus() {
+
+      const key =
+        localStorage.getItem(
+          "pollinations_api_key"
+        );
+
+      if (key) {
+
+        pollinationsStatus.textContent =
+          "✅ Pollinations متصل است.";
+
+      } else {
+
+        pollinationsStatus.textContent =
+          "⚠️ ابتدا Pollinations را متصل کنید.";
       }
     }
 
 
-    /* -------------------------
-       ثبت نام
-    ------------------------- */
+    /*
+      --------------------------------------------------
+      ثبت نام Supabase
+      --------------------------------------------------
+    */
 
-    signupBtn.addEventListener("click", async function () {
+    signupBtn.addEventListener(
+      "click",
+      async function () {
 
-      const email =
-        emailInput.value.trim();
+        const email =
+          emailInput.value.trim();
 
-      const password =
-        passwordInput.value;
+        const password =
+          passwordInput.value;
 
-      if (!email || !password) {
+        if (!email || !password) {
 
-        accountMessage.textContent =
-          "لطفاً ایمیل و رمز عبور را وارد کنید.";
+          accountMessage.textContent =
+            "لطفاً ایمیل و رمز عبور را وارد کنید.";
 
-        return;
-      }
-
-      if (password.length < 6) {
-
-        accountMessage.textContent =
-          "رمز عبور باید حداقل ۶ کاراکتر باشد.";
-
-        return;
-      }
-
-      accountMessage.textContent =
-        "در حال ثبت‌نام...";
-
-      const { error } =
-        await supabaseClient.auth.signUp({
-
-          email: email,
-
-          password: password,
-
-          options: {
-
-            emailRedirectTo:
-              window.location.origin
-
-          }
-
-        });
-
-      if (error) {
-
-        accountMessage.textContent =
-          "خطا: " + error.message;
-
-        return;
-      }
-
-      accountMessage.textContent =
-        "ثبت‌نام انجام شد. ایمیل خود را بررسی کنید.";
-
-    });
-
-
-    /* -------------------------
-       ورود
-    ------------------------- */
-
-    loginBtn.addEventListener("click", async function () {
-
-      const email =
-        emailInput.value.trim();
-
-      const password =
-        passwordInput.value;
-
-      if (!email || !password) {
-
-        accountMessage.textContent =
-          "لطفاً ایمیل و رمز عبور را وارد کنید.";
-
-        return;
-      }
-
-      accountMessage.textContent =
-        "در حال ورود...";
-
-      const { error } =
-        await supabaseClient.auth.signInWithPassword({
-
-          email: email,
-
-          password: password
-
-        });
-
-      if (error) {
-
-        accountMessage.textContent =
-          "خطا: " + error.message;
-
-        return;
-      }
-
-      accountMessage.textContent =
-        "ورود موفق بود.";
-
-      await updateUserInterface();
-
-    });
-
-
-    /* -------------------------
-       خروج
-    ------------------------- */
-
-    logoutBtn.addEventListener("click", async function () {
-
-      await supabaseClient.auth.signOut();
-
-      await updateUserInterface();
-
-    });
-
-
-    /* -------------------------
-       اتصال Pollinations
-    ------------------------- */
-
-    function connectPollinations() {
-
-      /*
-        کلید pk_ را داخل HTML قرار نمی‌دهیم.
-
-        کاربر باید از طریق App Pollinations
-        اتصال حساب خودش را انجام دهد.
-      */
-
-      const callbackUrl =
-        encodeURIComponent(
-          window.location.origin
-        );
-
-     
-      window.location.href =
-        pollinationsUrl;
-    }
-
-
-    document
-      .getElementById("connectPollinationsBtn")
-      .addEventListener(
-        "click",
-        connectPollinations
-      );
-
-
-    document
-      .getElementById("connectPollinationsBtn2")
-      .addEventListener(
-        "click",
-        connectPollinations
-      );
-
-
-    /* -------------------------
-       دریافت توکن از URL
-    ------------------------- */
-
-    async function checkPollinationsConnection() {
-
-      const params =
-        new URLSearchParams(
-          window.location.search
-        );
-
-      const accessToken =
-        params.get("access_token");
-
-      if (accessToken) {
-
-        sessionStorage.setItem(
-          "pollinations_access_token",
-          accessToken
-        );
-
-        window.history.replaceState(
-          {},
-          document.title,
-          window.location.pathname
-        );
-
-        if (connectionMessage) {
-
-          connectionMessage.textContent =
-            "✅ حساب Pollinations متصل شد.";
-
+          return;
         }
 
-        return;
+        if (password.length < 6) {
+
+          accountMessage.textContent =
+            "رمز عبور باید حداقل ۶ کاراکتر باشد.";
+
+          return;
+        }
+
+        accountMessage.textContent =
+          "در حال ثبت‌نام...";
+
+        const {
+          error
+        } =
+          await supabaseClient.auth.signUp({
+
+            email,
+            password,
+
+            options: {
+              emailRedirectTo:
+                window.location.origin + "/"
+            }
+
+          });
+
+        if (error) {
+
+          accountMessage.textContent =
+            "خطا: " + error.message;
+
+          return;
+        }
+
+        accountMessage.textContent =
+          "ثبت‌نام انجام شد. ایمیل خود را بررسی کنید.";
       }
-
-      const savedToken =
-        sessionStorage.getItem(
-          "pollinations_access_token"
-        );
-
-      if (savedToken && connectionMessage) {
-
-        connectionMessage.textContent =
-          "✅ حساب Pollinations متصل است.";
-
-      }
-
-    }
+    );
 
 
-    /* -------------------------
-       بررسی ورود
-    ------------------------- */
+    /*
+      --------------------------------------------------
+      ورود
+      --------------------------------------------------
+    */
 
-    supabaseClient.auth.onAuthStateChange(
+    loginBtn.addEventListener(
+      "click",
       async function () {
+
+        const email =
+          emailInput.value.trim();
+
+        const password =
+          passwordInput.value;
+
+        if (!email || !password) {
+
+          accountMessage.textContent =
+            "لطفاً ایمیل و رمز عبور را وارد کنید.";
+
+          return;
+        }
+
+        accountMessage.textContent =
+          "در حال ورود...";
+
+        const {
+          error
+        } =
+          await supabaseClient.auth
+            .signInWithPassword({
+
+              email,
+              password
+
+            });
+
+        if (error) {
+
+          accountMessage.textContent =
+            "خطا: " + error.message;
+
+          return;
+        }
+
+        accountMessage.textContent =
+          "ورود موفق بود.";
+
+        await updateUserInterface();
+      }
+    );
+
+
+    /*
+      --------------------------------------------------
+      خروج
+      --------------------------------------------------
+    */
+
+    logoutBtn.addEventListener(
+      "click",
+      async function () {
+
+        await supabaseClient.auth.signOut();
 
         await updateUserInterface();
 
@@ -594,17 +607,32 @@
     );
 
 
+    /*
+      --------------------------------------------------
+      تغییر وضعیت Auth
+      --------------------------------------------------
+    */
+
+    supabaseClient.auth.onAuthStateChange(
+      function () {
+        updateUserInterface();
+      }
+    );
+
+
     updateUserInterface();
 
-    checkPollinationsConnection();
 
-
-    /* -------------------------
-       باز کردن ساخت عکس
-    ------------------------- */
+    /*
+      --------------------------------------------------
+      باز کردن ساخت عکس
+      --------------------------------------------------
+    */
 
     document
-      .getElementById("openImageGenerator")
+      .getElementById(
+        "openImageGenerator"
+      )
       .addEventListener(
         "click",
         async function () {
@@ -623,12 +651,33 @@
             return;
           }
 
-          document
-            .getElementById("imageGenerator")
-            .style.display = "block";
+
+          const pollinationsKey =
+            localStorage.getItem(
+              "pollinations_api_key"
+            );
+
+          if (!pollinationsKey) {
+
+            alert(
+              "ابتدا روی «اتصال Pollinations» بزنید."
+            );
+
+            return;
+          }
+
 
           document
-            .getElementById("imageGenerator")
+            .getElementById(
+              "imageGenerator"
+            )
+            .style.display =
+            "block";
+
+          document
+            .getElementById(
+              "imageGenerator"
+            )
             .scrollIntoView({
               behavior: "smooth"
             });
@@ -637,29 +686,37 @@
       );
 
 
-    /* -------------------------
-       ساخت عکس
-    ------------------------- */
+    /*
+      --------------------------------------------------
+      ساخت تصویر
+      --------------------------------------------------
+    */
 
     document
-      .getElementById("generateImageBtn")
+      .getElementById(
+        "generateImageBtn"
+      )
       .addEventListener(
         "click",
         async function () {
 
           const prompt =
             document
-              .getElementById("imagePrompt")
+              .getElementById(
+                "imagePrompt"
+              )
               .value
               .trim();
 
           const status =
-            document
-              .getElementById("imageStatus");
+            document.getElementById(
+              "imageStatus"
+            );
 
           const image =
-            document
-              .getElementById("generatedImage");
+            document.getElementById(
+              "generatedImage"
+            );
 
 
           if (!prompt) {
@@ -671,16 +728,16 @@
           }
 
 
-          const accessToken =
-            sessionStorage.getItem(
-              "pollinations_access_token"
+          const pollinationsKey =
+            localStorage.getItem(
+              "pollinations_api_key"
             );
 
 
-          if (!accessToken) {
+          if (!pollinationsKey) {
 
             status.textContent =
-              "ابتدا حساب Pollinations را متصل کنید.";
+              "ابتدا Pollinations را متصل کنید.";
 
             return;
           }
@@ -703,19 +760,16 @@
                   method: "POST",
 
                   headers: {
-
                     "Content-Type":
                       "application/json"
-
                   },
 
                   body: JSON.stringify({
 
-                    prompt:
-                      prompt,
+                    prompt: prompt,
 
                     access_token:
-                      accessToken
+                      pollinationsKey
 
                   })
 
@@ -733,16 +787,14 @@
                 data.error ||
                 "ساخت تصویر ناموفق بود."
               );
-
             }
 
 
             if (!data.image) {
 
               throw new Error(
-                "تصویری از سرویس دریافت نشد."
+                "تصویر از سرویس دریافت نشد."
               );
-
             }
 
 
@@ -755,13 +807,11 @@
             status.textContent =
               "✅ تصویر با موفقیت ساخته شد.";
 
-
           } catch (error) {
 
             status.textContent =
               "خطا: " +
               error.message;
-
           }
 
         }
