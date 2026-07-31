@@ -1,50 +1,66 @@
 exports.handler = async function (event) {
+
+  if (event.httpMethod !== "POST") {
+
+    return {
+      statusCode: 405,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        error: "Method Not Allowed"
+      })
+    };
+
+  }
+
+
   try {
-    if (event.httpMethod !== "POST") {
-      return {
-        statusCode: 405,
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          error: "Method not allowed"
-        })
-      };
-    }
 
-    var body = JSON.parse(event.body || "{}");
+    const body =
+      JSON.parse(
+        event.body || "{}"
+      );
 
-    var code = body.code;
-    var codeVerifier = body.code_verifier;
-    var redirectUri = body.redirect_uri;
 
-    if (!code || !codeVerifier || !redirectUri) {
+    const code =
+      body.code;
+
+    const codeVerifier =
+      body.code_verifier;
+
+    const redirectUri =
+      body.redirect_uri;
+
+    const clientId =
+      body.client_id;
+
+
+    if (
+      !code ||
+      !codeVerifier ||
+      !redirectUri ||
+      !clientId
+    ) {
+
       return {
         statusCode: 400,
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type":
+            "application/json"
         },
         body: JSON.stringify({
-          error: "Missing OAuth parameters"
+          error:
+            "اطلاعات OAuth ناقص است."
         })
       };
+
     }
 
-    var clientId = process.env.POLLINATIONS_CLIENT_ID;
 
-    if (!clientId) {
-      return {
-        statusCode: 500,
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          error: "POLLINATIONS_CLIENT_ID is not configured"
-        })
-      };
-    }
+    const params =
+      new URLSearchParams();
 
-    var params = new URLSearchParams();
 
     params.append(
       "grant_type",
@@ -71,78 +87,111 @@ exports.handler = async function (event) {
       codeVerifier
     );
 
-    var response = await fetch(
-      "https://enter.pollinations.ai/api/oauth/token",
-      {
-        method: "POST",
 
-        headers: {
-          "Content-Type":
-            "application/x-www-form-urlencoded"
-        },
+    const response =
+      await fetch(
+        "https://enter.pollinations.ai/api/oauth/token",
+        {
 
-        body: params.toString()
-      }
-    );
+          method:"POST",
 
-    var data = await response.json();
+          headers:{
+            "Content-Type":
+              "application/x-www-form-urlencoded"
+          },
 
-    if (!response.ok) {
+          body:
+            params.toString()
+
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(!response.ok){
+
       return {
-        statusCode: response.status,
+        statusCode:
+          response.status,
 
-        headers: {
+        headers:{
           "Content-Type":
             "application/json"
         },
 
-        body: JSON.stringify({
-          error:
-            data.error_description ||
-            data.error ||
-            "OAuth token exchange failed"
-        })
+        body:
+          JSON.stringify({
+            error:
+              data.error_description ||
+              data.error ||
+              "Pollinations OAuth failed"
+          })
+
       };
+
     }
 
-    return {
-      statusCode: 200,
 
-      headers: {
+    return {
+
+      statusCode:200,
+
+      headers:{
         "Content-Type":
           "application/json"
       },
 
-      body: JSON.stringify({
-        access_token:
-          data.access_token,
+      body:
+        JSON.stringify({
 
-        token_type:
-          data.token_type,
+          access_token:
+            data.access_token,
 
-        expires_in:
-          data.expires_in,
+          token_type:
+            data.token_type,
 
-        scope:
-          data.scope
-      })
+          expires_in:
+            data.expires_in,
+
+          scope:
+            data.scope
+
+        })
+
     };
 
-  } catch (error) {
+
+  }catch(error){
+
+    console.error(
+      "Pollinations token error:",
+      error
+    );
+
 
     return {
-      statusCode: 500,
 
-      headers: {
+      statusCode:500,
+
+      headers:{
         "Content-Type":
           "application/json"
       },
 
-      body: JSON.stringify({
-        error:
-          error.message ||
-          "Unknown error"
-      })
+      body:
+        JSON.stringify({
+
+          error:
+            "خطای داخلی در اتصال Pollinations: " +
+            error.message
+
+        })
+
     };
+
   }
+
 };
