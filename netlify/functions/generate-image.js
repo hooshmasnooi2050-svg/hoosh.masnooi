@@ -69,7 +69,8 @@ exports.handler = async function (event) {
 
     const imageBuffer = await response.arrayBuffer();
 
-    const base64Image = Buffer.from(imageBuffer).toString("base64");
+    const base64Image =
+      Buffer.from(imageBuffer).toString("base64");
 
     return {
       statusCode: 200,
