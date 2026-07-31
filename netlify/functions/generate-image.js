@@ -10,7 +10,9 @@ exports.handler = async function (event) {
     }
 
     var body = JSON.parse(event.body || "{}");
+
     var prompt = body.prompt;
+    var accessToken = body.access_token;
 
     if (!prompt) {
       return {
@@ -21,18 +23,12 @@ exports.handler = async function (event) {
       };
     }
 
-    var accessToken =
-      event.headers &&
-      event.headers.authorization
-        ? event.headers.authorization.replace("Bearer ", "")
-        : "";
-
     if (!accessToken) {
       return {
         statusCode: 401,
         body: JSON.stringify({
           error:
-            "Pollinations account is not connected. Please connect your Pollinations account first."
+            "Pollinations account is not connected"
         })
       };
     }
@@ -45,15 +41,17 @@ exports.handler = async function (event) {
       encodedPrompt +
       "?model=flux&width=1024&height=1024";
 
-    var response =
-      await fetch(imageUrl, {
+    var response = await fetch(
+      imageUrl,
+      {
         method: "GET",
 
         headers: {
           "Authorization":
             "Bearer " + accessToken
         }
-      });
+      }
+    );
 
     if (!response.ok) {
 
